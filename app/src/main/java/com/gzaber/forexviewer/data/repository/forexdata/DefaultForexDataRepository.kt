@@ -8,8 +8,9 @@ import com.gzaber.forexviewer.data.repository.forexdata.model.toModel
 import com.gzaber.forexviewer.data.source.network.ForexDataApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class DefaultForexDataRepository(
+class DefaultForexDataRepository @Inject constructor(
     private val forexDataNetworkDataSource: ForexDataApiService
 ) : ForexDataRepository {
 
