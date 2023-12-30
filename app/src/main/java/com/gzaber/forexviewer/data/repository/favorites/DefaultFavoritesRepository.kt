@@ -7,8 +7,9 @@ import com.gzaber.forexviewer.data.source.local.FavoriteDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
+import javax.inject.Inject
 
-class DefaultFavoritesRepository(
+class DefaultFavoritesRepository @Inject constructor(
     private val favoritesLocalDataSource: FavoriteDao
 ) : FavoritesRepository {
 

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
 
@@ -73,6 +74,12 @@ dependencies {
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    val hilt_version = "2.50"
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    ksp("com.google.dagger:dagger-compiler:$hilt_version")
+    ksp("com.google.dagger:hilt-compiler:$hilt_version")
 
     testImplementation("junit:junit:4.13.2")
 
