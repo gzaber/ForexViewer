@@ -17,10 +17,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ForexDataNetworkModule {
 
+    private val interceptor = run {
+        ApiKeyInterceptor("demo")
+    }
+
     @Singleton
     @Provides
     fun provideHttpClient(): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor(ApiKeyInterceptor("demo")).build()
+        OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Singleton
     @Provides
