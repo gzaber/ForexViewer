@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.gzaber.forexviewer"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -64,6 +64,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
@@ -74,11 +75,11 @@ dependencies {
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     val hilt_version = "2.50"
     implementation("com.google.dagger:hilt-android:$hilt_version")
-    ksp("com.google.dagger:dagger-compiler:$hilt_version")
     ksp("com.google.dagger:hilt-compiler:$hilt_version")
 
     testImplementation("junit:junit:4.13.2")
