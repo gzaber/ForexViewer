@@ -22,7 +22,8 @@ class DefaultForexDataRepository @Inject constructor(
     }
 
     override fun fetchExchangeRate(symbol: String): Flow<ExchangeRate> = flow {
-        forexDataNetworkDataSource.fetchExchangeRate(symbol).toModel()
+        val exchangeRate = forexDataNetworkDataSource.fetchExchangeRate(symbol).toModel()
+        emit(exchangeRate)
     }
 
     override fun fetchQuote(symbol: String, interval: String): Flow<Quote> = flow {
