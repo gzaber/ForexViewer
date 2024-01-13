@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.forexpairs.composable
+package com.gzaber.forexviewer.ui.util.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues

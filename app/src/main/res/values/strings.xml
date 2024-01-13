@@ -5,4 +5,7 @@
     <string name="search">Search</string>
     <string name="clear_search_text">Clear search text</string>
     <string name="favorite">Favorite</string>
+    <string name="update_api_key">Update api key</string>
+    <string name="navigate_to_forex_pairs">Navigate to forex pairs screen</string>
+    <string name="failure_message">Something went wrong</string>
 </resources>
