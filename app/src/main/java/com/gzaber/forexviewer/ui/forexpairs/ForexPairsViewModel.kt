@@ -43,7 +43,7 @@ class ForexPairsViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
 
-    private val _forexGroupsFilterType = MutableStateFlow(ForexGroupsFilterType.MAJOR)
+    private val _forexGroupsFilterType = MutableStateFlow(ForexGroupsFilterType.ALL)
     private val _searchText = MutableStateFlow("")
 
     val uiState = combine(

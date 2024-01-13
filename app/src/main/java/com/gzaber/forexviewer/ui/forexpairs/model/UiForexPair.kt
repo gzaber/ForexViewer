@@ -11,7 +11,7 @@ data class UiForexPair(
     val isFavorite: Boolean,
     val favoriteId: Int? = null
 ) {
-    fun toFavorite() = Favorite(id = favoriteId, symbol)
+    fun toFavorite() = Favorite(id = favoriteId, symbol, base, quote)
 }
 
 fun ForexPair.toUiModel(isFavorite: Boolean, favoriteId: Int?) = UiForexPair(

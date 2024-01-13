@@ -3,6 +3,7 @@ package com.gzaber.forexviewer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.gzaber.forexviewer.ui.favorites.FavoritesScreen
 import com.gzaber.forexviewer.ui.forexpairs.ForexPairsScreen
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,7 +14,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ForexViewerTheme {
-                ForexPairsScreen()
+                FavoritesScreen()
+                // ForexPairsScreen()
             }
         }
     }

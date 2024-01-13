@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gzaber.forexviewer.ui.forexpairs.composable.ForexPairsAppBar
 import com.gzaber.forexviewer.ui.forexpairs.composable.ForexPairsContent
-import com.gzaber.forexviewer.ui.forexpairs.composable.LoadingBox
+import com.gzaber.forexviewer.ui.util.composable.LoadingBox
 
 @Composable
 fun ForexPairsScreen(
