@@ -7,7 +7,8 @@ import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import kotlinx.coroutines.flow.Flow
 
 interface ForexDataRepository {
-    fun fetchForexPairs(): Flow<List<ForexPair>>
+    fun fetchAllForexPairs(): Flow<List<ForexPair>>
+    fun fetchForexPair(symbol: String): Flow<ForexPair>
     fun fetchExchangeRate(symbol: String): Flow<ExchangeRate>
     fun fetchQuote(symbol: String, interval: String): Flow<Quote>
     fun fetchTimeSeries(
