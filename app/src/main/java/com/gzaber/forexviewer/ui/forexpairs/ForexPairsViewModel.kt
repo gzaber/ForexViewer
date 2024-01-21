@@ -4,15 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
-import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
-import com.gzaber.forexviewer.ui.forexpairs.model.UiForexPair
-import com.gzaber.forexviewer.ui.forexpairs.model.toUiModel
+import com.gzaber.forexviewer.ui.util.model.UiForexPair
+import com.gzaber.forexviewer.ui.util.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -22,7 +19,7 @@ enum class ForexPairsStatus {
     LOADING, SUCCESS, FAILURE
 }
 
-enum class ForexGroupsFilterType(val group: String) {
+enum class ForexGroup(val value: String) {
     ALL("All"),
     MAJOR("Major"),
     MINOR("Minor"),
@@ -34,6 +31,7 @@ data class ForexPairsUiState(
     val status: ForexPairsStatus = ForexPairsStatus.LOADING,
     val forexPairs: List<UiForexPair> = listOf(),
     val searchText: String = "",
+    val group: ForexGroup = ForexGroup.MAJOR,
     val failureMessage: String = ""
 )
 
@@ -43,15 +41,15 @@ class ForexPairsViewModel @Inject constructor(
     private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
 
-    private val _forexGroupsFilterType = MutableStateFlow(ForexGroupsFilterType.ALL)
+    private val _forexGroup = MutableStateFlow(ForexGroup.ALL)
     private val _searchText = MutableStateFlow("")
 
     val uiState = combine(
-        forexDataRepository.fetchForexPairs(),
+        forexDataRepository.fetchAllForexPairs(),
         favoritesRepository.loadAllFavorites(),
-        _forexGroupsFilterType,
+        _forexGroup,
         _searchText
-    ) { forexPairs, favorites, filterType, searchText ->
+    ) { forexPairs, favorites, group, searchText ->
         val uiForexPairs = forexPairs.map { forexPair ->
             forexPair.toUiModel(
                 isFavorite = favorites.any { favorite ->
@@ -60,7 +58,7 @@ class ForexPairsViewModel @Inject constructor(
                 favoriteId = favorites.find { it.symbol == forexPair.symbol }?.id
             )
         }.filter {
-            (it.group == filterType.group) || (filterType == ForexGroupsFilterType.ALL)
+            (it.group == group.value) || (group == ForexGroup.ALL)
         }.filter {
             it.symbol.contains(_searchText.value, ignoreCase = true) ||
                     it.base.contains(_searchText.value, ignoreCase = true) ||
@@ -69,7 +67,8 @@ class ForexPairsViewModel @Inject constructor(
         ForexPairsUiState(
             status = ForexPairsStatus.SUCCESS,
             forexPairs = uiForexPairs,
-            searchText = searchText
+            searchText = searchText,
+            group = group
         )
     }
         .catch {
@@ -98,8 +97,8 @@ class ForexPairsViewModel @Inject constructor(
         }
     }
 
-    fun setGroupFiltering(filterType: ForexGroupsFilterType) {
-        _forexGroupsFilterType.value = filterType
+    fun onForexGroupSet(group: String) {
+        _forexGroup.value = ForexGroup.valueOf(group)
     }
 
     fun onSearchTextChanged(text: String) {
