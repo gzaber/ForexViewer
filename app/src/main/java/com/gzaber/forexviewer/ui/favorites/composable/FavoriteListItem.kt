@@ -14,19 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gzaber.forexviewer.ui.favorites.model.UiFavorite
+import com.gzaber.forexviewer.ui.util.model.UiFavorite
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @Composable
 fun FavoriteListItem(
     favorite: UiFavorite,
-    onClick: () -> Unit,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick }
+            .clickable {
+                onClick(favorite.symbol)
+            }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

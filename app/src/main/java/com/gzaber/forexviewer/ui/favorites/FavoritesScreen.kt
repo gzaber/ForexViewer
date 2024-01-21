@@ -17,6 +17,9 @@ import com.gzaber.forexviewer.ui.util.composable.LoadingBox
 
 @Composable
 fun FavoritesScreen(
+    onApiKeyClick: () -> Unit,
+    onForexPairsClick: () -> Unit,
+    onListItemClick: (String) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
@@ -25,7 +28,10 @@ fun FavoritesScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            FavoritesAppBar(onBackClick = {})
+            FavoritesAppBar(
+                onApiKeyClick = onApiKeyClick,
+                onForexPairsClick = onForexPairsClick
+            )
         }
     ) { paddingValues ->
         when (uiState.status) {
@@ -34,7 +40,7 @@ fun FavoritesScreen(
             else -> FavoritesList(
                 favorites = uiState.favorites,
                 contentPadding = paddingValues,
-                onClick = {}
+                onListItemClick = onListItemClick
             )
         }
     }
