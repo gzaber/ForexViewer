@@ -14,11 +14,16 @@ class DefaultForexDataRepository @Inject constructor(
     private val forexDataNetworkDataSource: ForexDataApiService
 ) : ForexDataRepository {
 
-    override fun fetchForexPairs(): Flow<List<ForexPair>> = flow {
-        val forexPairs = forexDataNetworkDataSource.fetchForexPairsList().data.map {
+    override fun fetchAllForexPairs(): Flow<List<ForexPair>> = flow {
+        val allForexPairs = forexDataNetworkDataSource.fetchAllForexPairsList().data.map {
             it.toModel()
         }
-        emit(forexPairs)
+        emit(allForexPairs)
+    }
+
+    override fun fetchForexPair(symbol: String): Flow<ForexPair> = flow {
+        val forexPair = forexDataNetworkDataSource.fetchForexPair(symbol).data.first().toModel()
+        emit(forexPair)
     }
 
     override fun fetchExchangeRate(symbol: String): Flow<ExchangeRate> = flow {

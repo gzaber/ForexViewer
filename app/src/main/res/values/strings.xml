@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Forex Viewer</string>
+    <string name="app_name">ForexViewer</string>
     <string name="forex_pairs">Forex pairs</string>
     <string name="navigate_back">Navigate back</string>
     <string name="search">Search</string>

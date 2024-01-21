@@ -5,12 +5,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gzaber.forexviewer.ui.forexpairs.model.UiForexPair
+import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @Composable
 fun ForexPairsList(
     forexPairs: List<UiForexPair>,
+    onListItemClick: (String) -> Unit,
     onFavoriteClick: (UiForexPair) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -20,7 +21,7 @@ fun ForexPairsList(
         items(forexPairs, key = { it.symbol }) { forexPair ->
             ForexPairListItem(
                 forexPair = forexPair,
-                onClick = {},
+                onClick = onListItemClick,
                 onFavoriteClick = onFavoriteClick
             )
         }
@@ -55,6 +56,7 @@ fun ForexPairsListPreview() {
                     isFavorite = false
                 )
             ),
+            onListItemClick = {},
             onFavoriteClick = {}
         )
     }

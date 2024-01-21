@@ -7,14 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gzaber.forexviewer.ui.favorites.model.UiFavorite
+import com.gzaber.forexviewer.ui.util.model.UiFavorite
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @Composable
 fun FavoritesList(
     favorites: List<UiFavorite>,
     contentPadding: PaddingValues,
-    onClick: (UiFavorite) -> Unit,
+    onListItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -24,7 +24,7 @@ fun FavoritesList(
         items(favorites, key = { it.symbol }) { favorite ->
             FavoriteListItem(
                 favorite = favorite,
-                onClick = { onClick(favorite) },
+                onClick = onListItemClick,
             )
         }
     }
@@ -56,7 +56,7 @@ fun ForexPairsListPreview() {
                 )
             ),
             contentPadding = PaddingValues(16.dp),
-            onClick = {}
+            onListItemClick = {}
         )
     }
 }

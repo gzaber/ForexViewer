@@ -9,7 +9,12 @@ import retrofit2.http.Query
 
 interface ForexDataApiService {
     @GET("forex_pairs")
-    suspend fun fetchForexPairsList(): NetworkForexPairsList
+    suspend fun fetchAllForexPairsList(): NetworkForexPairsList
+
+    @GET("forex_pairs")
+    suspend fun fetchForexPair(
+        @Query("symbol") symbol: String
+    ): NetworkForexPairsList
 
     @GET("exchange_rate")
     suspend fun fetchExchangeRate(

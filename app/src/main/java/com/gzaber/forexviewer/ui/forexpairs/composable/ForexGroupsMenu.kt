@@ -8,42 +8,34 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gzaber.forexviewer.ui.forexpairs.ForexGroupsFilterType
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @Composable
-fun ForexGroupsList(
-    onGroupClick: (ForexGroupsFilterType) -> Unit,
+fun ForexGroupsMenu(
+    values: List<String>,
+    selectedValue: String,
+    onValueClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedGroup by remember {
-        mutableStateOf(ForexGroupsFilterType.ALL)
-    }
-
     LazyRow(
         modifier = modifier
     ) {
-        items(ForexGroupsFilterType.entries) { filter ->
+        items(values) { value ->
             Text(
-                text = filter.group.uppercase(),
-                fontWeight = if (filter == selectedGroup) FontWeight.Bold else FontWeight.Normal,
+                text = value.replace("_", "-"),
+                fontWeight = if (value == selectedValue) FontWeight.Bold else FontWeight.Normal,
                 modifier = Modifier
                     .background(
-                        if (filter == selectedGroup) MaterialTheme.colorScheme.primaryContainer
+                        if (value == selectedValue) MaterialTheme.colorScheme.primaryContainer
                         else MaterialTheme.colorScheme.background
                     )
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .clickable {
-                        selectedGroup = filter
-                        onGroupClick(selectedGroup)
+                        onValueClick(value)
                     },
             )
         }
@@ -52,8 +44,12 @@ fun ForexGroupsList(
 
 @Preview
 @Composable
-fun ForexGroupsListPreview() {
+fun ForexGroupsMenuPreview() {
     ForexViewerTheme {
-        ForexGroupsList(onGroupClick = {})
+        ForexGroupsMenu(
+            values = listOf("ALL", "MAJOR", "MINOR", "EXOTIC", "EXOTIC-CROSS"),
+            selectedValue = "MAJOR",
+            onValueClick = {}
+        )
     }
 }
