@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
-import com.gzaber.forexviewer.ui.favorites.model.UiFavorite
+import com.gzaber.forexviewer.ui.util.model.UiFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,25 +37,25 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 favoritesRepository.loadAllFavorites()
-                    .collect { favorites ->
-                        favorites.onEach { favorite ->
+                    .map { favorites ->
+                        favorites.map { favorite ->
                             forexDataRepository.fetchExchangeRate(favorite.symbol)
-                                .collect { exchangeRate ->
-                                    _uiState.update {
-                                        val uiFavorite = UiFavorite(
-                                            symbol = favorite.symbol,
-                                            base = favorite.base,
-                                            quote = favorite.quote,
-                                            exchangeRate = exchangeRate.rate
-                                        )
-                                        val uiFavorites = it.favorites.toMutableList()
-                                        uiFavorites.add(uiFavorite)
-                                        it.copy(
-                                            status = FavoritesStatus.SUCCESS,
-                                            favorites = uiFavorites
-                                        )
-                                    }
-                                }
+                                .map { exchangeRate ->
+                                    UiFavorite(
+                                        symbol = favorite.symbol,
+                                        base = favorite.base,
+                                        quote = favorite.quote,
+                                        exchangeRate = exchangeRate.rate
+                                    )
+                                }.first()
+                        }
+                    }
+                    .collect { uiFavorites ->
+                        _uiState.update {
+                            it.copy(
+                                status = FavoritesStatus.SUCCESS,
+                                favorites = uiFavorites
+                            )
                         }
                     }
             } catch (e: Exception) {
@@ -63,7 +65,6 @@ class FavoritesViewModel @Inject constructor(
                         failureMessage = e.message ?: ""
                     )
                 }
-
             }
         }
     }
