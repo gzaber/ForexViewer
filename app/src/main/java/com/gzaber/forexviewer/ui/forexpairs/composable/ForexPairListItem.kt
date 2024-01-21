@@ -21,20 +21,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gzaber.forexviewer.R
-import com.gzaber.forexviewer.ui.forexpairs.model.UiForexPair
+import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @Composable
 fun ForexPairListItem(
     forexPair: UiForexPair,
-    onClick: () -> Unit,
+    onClick: (String) -> Unit,
     onFavoriteClick: (UiForexPair) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick }
+            .clickable {
+                onClick(forexPair.symbol)
+            }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
