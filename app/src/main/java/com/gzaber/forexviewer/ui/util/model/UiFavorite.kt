@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites.model
+package com.gzaber.forexviewer.ui.util.model
 
 data class UiFavorite(
     val symbol: String,
