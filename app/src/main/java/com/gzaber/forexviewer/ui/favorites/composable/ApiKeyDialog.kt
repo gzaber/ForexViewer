@@ -28,6 +28,7 @@ fun ApiKeyDialog(
         text = {
             OutlinedTextField(
                 value = apiKeyText,
+                singleLine = true,
                 onValueChange = onApiKeyTextChanged
             )
         },

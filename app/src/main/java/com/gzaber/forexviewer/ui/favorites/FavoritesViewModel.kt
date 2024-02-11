@@ -61,6 +61,16 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            apiKeyRepository.loadApiKey()
+                .catch {
+                    _failureMessage.value = it.message
+                }
+                .collect {
+                    _apiKeyText.value = it
+                }
+        }
+
+        viewModelScope.launch {
             try {
                 favoritesRepository.loadAllFavorites()
                     .map { favorites ->
