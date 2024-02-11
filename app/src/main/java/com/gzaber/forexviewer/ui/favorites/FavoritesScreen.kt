@@ -11,13 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gzaber.forexviewer.R
+import com.gzaber.forexviewer.ui.favorites.composable.ApiKeyDialog
 import com.gzaber.forexviewer.ui.favorites.composable.FavoritesAppBar
 import com.gzaber.forexviewer.ui.favorites.composable.FavoritesList
 import com.gzaber.forexviewer.ui.util.composable.LoadingBox
 
 @Composable
 fun FavoritesScreen(
-    onApiKeyClick: () -> Unit,
     onForexPairsClick: () -> Unit,
     onListItemClick: (String) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -29,28 +29,36 @@ fun FavoritesScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             FavoritesAppBar(
-                onApiKeyClick = onApiKeyClick,
+                onApiKeyClick = viewModel::toggleShowingDialog,
                 onForexPairsClick = onForexPairsClick
             )
         }
     ) { paddingValues ->
-        when (uiState.status) {
-            FavoritesStatus.LOADING -> LoadingBox(paddingValues = paddingValues)
-
-            else -> FavoritesList(
-                favorites = uiState.favorites,
-                contentPadding = paddingValues,
-                onListItemClick = onListItemClick
-            )
-        }
+        if (uiState.isLoading) {
+            LoadingBox(paddingValues = paddingValues)
+        } else FavoritesList(
+            favorites = uiState.uiFavorites,
+            contentPadding = paddingValues,
+            onListItemClick = onListItemClick
+        )
     }
 
-    if (uiState.status == FavoritesStatus.FAILURE) {
-        val failureMessage =
-            uiState.failureMessage.ifEmpty { stringResource(id = R.string.failure_message) }
+    if (uiState.showDialog) {
+        ApiKeyDialog(
+            title = stringResource(id = R.string.api_key),
+            apiKeyText = uiState.apiKeyText,
+            confirmText = stringResource(id = R.string.confirm_api_key),
+            dismissText = stringResource(id = R.string.dismiss_api_key),
+            onApiKeyTextChanged = viewModel::onApiKeyTextChanged,
+            onDismissRequest = viewModel::toggleShowingDialog,
+            onConfirmRequest = viewModel::saveApiKey
+        )
+    }
 
-        LaunchedEffect(failureMessage) {
-            snackbarHostState.showSnackbar(failureMessage)
+    uiState.failureMessage?.let { message ->
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(message)
+            viewModel.snackbarMessageShown()
         }
     }
 }

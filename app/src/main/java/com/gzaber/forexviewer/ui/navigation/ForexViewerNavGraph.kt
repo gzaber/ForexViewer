@@ -32,7 +32,6 @@ fun ForexViewerNavGraph(
             route = ForexViewerDestinations.FAVORITES_ROUTE
         ) {
             FavoritesScreen(
-                onApiKeyClick = {},
                 onForexPairsClick = {
                     navActions.navigateToForexPairs()
                 },
