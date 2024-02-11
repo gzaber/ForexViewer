@@ -15,13 +15,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object FavoritesDatabaseModule {
 
+    private const val DATABASE_NAME: String = "favorites-db"
+
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): FavoritesDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             FavoritesDatabase::class.java,
-            "favorites-db"
+            DATABASE_NAME
         ).build()
     }
 
