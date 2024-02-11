@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ForexViewer</string>
+    <string name="api_key">Api key</string>
+    <string name="confirm_api_key">Save</string>
+    <string name="dismiss_api_key">Cancel</string>
     <string name="forex_pairs">Forex pairs</string>
     <string name="navigate_back">Navigate back</string>
     <string name="search">Search</string>

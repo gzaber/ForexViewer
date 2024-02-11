@@ -1,5 +1,7 @@
 package com.gzaber.forexviewer.di
 
+import com.gzaber.forexviewer.data.repository.apikey.ApiKeyRepository
+import com.gzaber.forexviewer.data.repository.apikey.DefaultApiKeyRepository
 import com.gzaber.forexviewer.data.repository.favorites.DefaultFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.forexdata.DefaultForexDataRepository
@@ -21,4 +23,8 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindFavoritesRepository(repository: DefaultFavoritesRepository): FavoritesRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindApiKeyRepository(repository: DefaultApiKeyRepository): ApiKeyRepository
 }
