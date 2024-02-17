@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites
+package com.gzaber.forexviewer.ui.home
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -11,24 +11,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.gzaber.forexviewer.R
-import com.gzaber.forexviewer.ui.favorites.composable.ApiKeyDialog
-import com.gzaber.forexviewer.ui.favorites.composable.FavoritesAppBar
-import com.gzaber.forexviewer.ui.favorites.composable.FavoritesList
+import com.gzaber.forexviewer.ui.home.composable.ApiKeyDialog
+import com.gzaber.forexviewer.ui.home.composable.FavoritesList
+import com.gzaber.forexviewer.ui.home.composable.HomeAppBar
 import com.gzaber.forexviewer.ui.util.composable.LoadingBox
 
 @Composable
-fun FavoritesScreen(
+fun HomeScreen(
     onForexPairsClick: () -> Unit,
     onListItemClick: (String) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    viewModel: FavoritesViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            FavoritesAppBar(
+            HomeAppBar(
                 onApiKeyClick = viewModel::toggleShowingDialog,
                 onForexPairsClick = onForexPairsClick
             )

@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites.composable
+package com.gzaber.forexviewer.ui.home.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

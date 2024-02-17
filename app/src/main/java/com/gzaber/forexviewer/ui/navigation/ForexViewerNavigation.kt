@@ -3,11 +3,11 @@ package com.gzaber.forexviewer.ui.navigation
 import androidx.navigation.NavController
 import com.gzaber.forexviewer.ui.navigation.ForexViewerDestinationArgs.SYMBOL_ARG
 import com.gzaber.forexviewer.ui.navigation.ForexViewerScreens.CHART_SCREEN
-import com.gzaber.forexviewer.ui.navigation.ForexViewerScreens.FAVORITES_SCREEN
 import com.gzaber.forexviewer.ui.navigation.ForexViewerScreens.FOREX_PAIRS_SCREEN
+import com.gzaber.forexviewer.ui.navigation.ForexViewerScreens.HOME_SCREEN
 
 private object ForexViewerScreens {
-    const val FAVORITES_SCREEN = "favorites"
+    const val HOME_SCREEN = "home"
     const val CHART_SCREEN = "chart"
     const val FOREX_PAIRS_SCREEN = "forexPairs"
 }
@@ -17,7 +17,7 @@ object ForexViewerDestinationArgs {
 }
 
 object ForexViewerDestinations {
-    const val FAVORITES_ROUTE = FAVORITES_SCREEN
+    const val HOME_ROUTE = HOME_SCREEN
     const val CHART_ROUTE = "$CHART_SCREEN/{$SYMBOL_ARG}"
     const val FOREX_PAIRS_ROUTE = FOREX_PAIRS_SCREEN
 }

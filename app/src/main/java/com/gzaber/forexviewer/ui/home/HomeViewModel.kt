@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites
+package com.gzaber.forexviewer.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class FavoritesUiState(
+data class HomeUiState(
     val uiFavorites: List<UiFavorite> = listOf(),
     val showDialog: Boolean = false,
     val apiKeyText: String = "",
@@ -27,7 +27,7 @@ data class FavoritesUiState(
 )
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     forexDataRepository: ForexDataRepository,
     favoritesRepository: FavoritesRepository,
     private val apiKeyRepository: ApiKeyRepository
@@ -46,7 +46,7 @@ class FavoritesViewModel @Inject constructor(
         _isLoading,
         _failureMessage,
     ) { uiFavorites, apiKeyText, showDialog, isLoading, failureMessage ->
-        FavoritesUiState(
+        HomeUiState(
             uiFavorites, showDialog, apiKeyText, isLoading, failureMessage
         )
     }
@@ -56,7 +56,7 @@ class FavoritesViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = FavoritesUiState()
+            initialValue = HomeUiState()
         )
 
     init {
