@@ -1,14 +1,18 @@
 package com.gzaber.forexviewer.data.repository.forexdata
 
+import android.util.Log
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.data.repository.forexdata.model.Quote
+import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.data.repository.forexdata.model.toModel
 import com.gzaber.forexviewer.data.source.network.ForexDataApiService
+import com.gzaber.forexviewer.data.source.network.model.NetworkTimeSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlin.math.log
 
 class DefaultForexDataRepository @Inject constructor(
     private val forexDataNetworkDataSource: ForexDataApiService
@@ -39,11 +43,12 @@ class DefaultForexDataRepository @Inject constructor(
         symbol: String,
         interval: String,
         outputSize: Int
-    ): Flow<List<TimeSeriesValue>> = flow {
-        forexDataNetworkDataSource.fetchTimeSeries(
+    ): Flow<TimeSeries> = flow {
+        val timeSeries = forexDataNetworkDataSource.fetchTimeSeries(
             symbol,
             interval,
             outputSize
-        ).values.map { it.toModel() }
+        ).toModel()
+        emit(timeSeries)
     }
 }

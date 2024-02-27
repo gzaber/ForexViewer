@@ -3,7 +3,7 @@ package com.gzaber.forexviewer.data.repository.forexdata
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.data.repository.forexdata.model.Quote
-import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
+import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
 import kotlinx.coroutines.flow.Flow
 
 interface ForexDataRepository {
@@ -15,5 +15,5 @@ interface ForexDataRepository {
         symbol: String,
         interval: String,
         outputSize: Int
-    ): Flow<List<TimeSeriesValue>>
+    ): Flow<TimeSeries>
 }
