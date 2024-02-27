@@ -18,6 +18,11 @@ class DefaultFavoritesRepository @Inject constructor(
     override suspend fun deleteFavorite(favorite: Favorite) =
         favoritesLocalDataSource.delete(favorite.toEntity())
 
+    override fun loadFavoriteBySymbol(symbol: String): Flow<Favorite?> =
+        favoritesLocalDataSource.loadBySymbol(symbol).map {
+            it?.toModel()
+        }
+
     override fun loadAllFavorites(): Flow<List<Favorite>> =
         favoritesLocalDataSource.loadAll().map {
             it.map {

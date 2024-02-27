@@ -15,6 +15,9 @@ interface FavoriteDao {
     @Delete
     suspend fun delete(favorite: FavoriteEntity)
 
+    @Query("SELECT * FROM favorites WHERE symbol = :symbol")
+    fun loadBySymbol(symbol: String): Flow<FavoriteEntity?>
+
     @Query("SELECT * FROM favorites")
     fun loadAll(): Flow<List<FavoriteEntity>>
 }
