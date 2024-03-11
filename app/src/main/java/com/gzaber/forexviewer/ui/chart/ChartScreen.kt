@@ -8,13 +8,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.gzaber.forexviewer.R
 import com.gzaber.forexviewer.ui.chart.composable.ChartAppBar
 import com.gzaber.forexviewer.ui.chart.composable.ChartContent
 import com.gzaber.forexviewer.ui.util.composable.LoadingBox
-import com.gzaber.forexviewer.ui.util.model.UiForexPair
 
 @Composable
 fun ChartScreen(
@@ -36,16 +33,15 @@ fun ChartScreen(
         }
     ) { paddingValues ->
 
-        when (uiState.status) {
-            ChartStatus.LOADING -> LoadingBox(paddingValues = paddingValues)
-
-            else -> ChartContent(
+        if (uiState.isLoading) {
+            LoadingBox(paddingValues = paddingValues)
+        } else {
+            ChartContent(
                 uiForexPair = uiState.uiForexPair,
                 exchangeRate = uiState.exchangeRate,
-                typesOfChart = ChartType.entries.map { it.toString() },
-                selectedType = uiState.chartType.toString(),
-                timeframes = ChartTimeframe.entries.map { it.toString() },
-                selectedTimeframe = uiState.chartTimeframe.toString(),
+                timeSeriesValues = uiState.timeSeriesValues,
+                selectedType = uiState.chartType,
+                selectedTimeframe = uiState.chartTimeframe,
                 onChartTypeClick = viewModel::onTypeChanged,
                 onChartTimeframeClick = viewModel::onTimeframeChanged,
                 contentPadding = paddingValues,
@@ -53,12 +49,10 @@ fun ChartScreen(
         }
     }
 
-    if (uiState.status == ChartStatus.FAILURE) {
-        val failureMessage =
-            uiState.failureMessage.ifEmpty { stringResource(id = R.string.failure_message) }
-
-        LaunchedEffect(failureMessage) {
-            snackbarHostState.showSnackbar(failureMessage)
+    uiState.failureMessage?.let { message ->
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(message)
+            viewModel.snackbarMessageShown()
         }
     }
 }

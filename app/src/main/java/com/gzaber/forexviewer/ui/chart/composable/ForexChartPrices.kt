@@ -1,0 +1,53 @@
+package com.gzaber.forexviewer.ui.chart.composable
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.dp
+import java.util.Locale
+
+@Composable
+fun ForexChartPrices(
+    chartMin: Double,
+    chartMax: Double,
+    heightUsed: Double,
+    modifier: Modifier = Modifier,
+    pricesNumber: Int = 8
+) {
+
+    val textMeasurer = rememberTextMeasurer()
+
+    Canvas(
+        modifier = modifier
+            .width(50.dp)
+            .fillMaxHeight()
+    ) {
+        val ratio = size.height * heightUsed / (chartMax - chartMin)
+        val step = (chartMax - chartMin) / (pricesNumber - 1)
+
+        repeat(pricesNumber + 1) {
+
+            val measuredText = textMeasurer.measure(
+                text = "- ${
+                    String.format(Locale.ENGLISH, "%.4f", chartMax - (it * step))
+                }"
+            )
+            val textOffset = Offset(
+                x = 0f,
+                y = (it * step * ratio + size.height * ((1 - heightUsed) / 2)).toFloat() - measuredText.size.height / 2
+            )
+
+            drawText(
+                textLayoutResult = measuredText,
+                topLeft = textOffset
+            )
+        }
+
+
+    }
+}
