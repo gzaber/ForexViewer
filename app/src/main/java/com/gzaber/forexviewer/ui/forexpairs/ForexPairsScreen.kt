@@ -34,7 +34,6 @@ fun ForexPairsScreen(
             ForexPairsContent(
                 forexPairs = uiState.uiForexPairs,
                 searchText = uiState.searchText,
-                forexGroups = ForexGroup.entries.map { it.toString() },
                 selectedGroup = uiState.group.toString(),
                 onListItemClick = onListItemClick,
                 onFavoriteClick = viewModel::toggleFavorite,

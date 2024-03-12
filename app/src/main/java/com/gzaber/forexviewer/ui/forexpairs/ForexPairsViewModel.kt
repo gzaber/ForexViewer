@@ -96,9 +96,9 @@ class ForexPairsViewModel @Inject constructor(
         }
     }
 
-    fun onForexGroupSet(group: String) {
+    fun onForexGroupSet(group: ForexGroup) {
         _uiState.update {
-            it.copy(group = ForexGroup.valueOf(group))
+            it.copy(group = group)
         }
     }
 

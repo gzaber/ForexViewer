@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gzaber.forexviewer.ui.forexpairs.ForexGroup
 import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
@@ -15,12 +16,11 @@ import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 fun ForexPairsContent(
     forexPairs: List<UiForexPair>,
     searchText: String,
-    forexGroups: List<String>,
     selectedGroup: String,
     contentPadding: PaddingValues,
     onListItemClick: (String) -> Unit,
     onFavoriteClick: (UiForexPair) -> Unit,
-    onForexGroupClick: (String) -> Unit,
+    onForexGroupClick: (ForexGroup) -> Unit,
     onSearchTextChange: (String) -> Unit,
     onClearSearchText: () -> Unit,
     modifier: Modifier = Modifier
@@ -31,9 +31,9 @@ fun ForexPairsContent(
             .padding(contentPadding)
     ) {
         ForexGroupsMenu(
-            values = forexGroups,
+            values = ForexGroup.entries.map { it.toString() },
             selectedValue = selectedGroup,
-            onValueClick = onForexGroupClick
+            onValueClick = { onForexGroupClick(ForexGroup.valueOf(it)) }
         )
         SearchTextField(
             searchText = searchText,
@@ -77,7 +77,6 @@ fun ForexPairsContentPreview() {
                 )
             ),
             searchText = "",
-            forexGroups = listOf("ALL", "MAJOR", "MINOR", "EXOTIC", "EXOTIC-CROSS"),
             selectedGroup = "MAJOR",
             contentPadding = PaddingValues(0.dp),
             onListItemClick = {},
