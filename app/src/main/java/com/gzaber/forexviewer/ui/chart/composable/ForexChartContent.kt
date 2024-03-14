@@ -1,6 +1,7 @@
 package com.gzaber.forexviewer.ui.chart.composable
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -27,10 +28,11 @@ fun ForexChartContent(
     chartMin: Double,
     chartMax: Double,
     heightUsed: Double,
+    lastPriceSpace: Int,
+    bodyWidth: Int,
+    bodySpace: Int,
     modifier: Modifier = Modifier,
-    lastPriceSpace: Int = 0,
-    bodyWidth: Int = 10,
-    bodySpace: Int = 5
+    scrollState: ScrollState = rememberScrollState()
 ) {
     Box(
         modifier = modifier
@@ -42,8 +44,8 @@ fun ForexChartContent(
 
         Canvas(
             modifier = Modifier
+                .horizontalScroll(scrollState, reverseScrolling = true)
                 .fillMaxHeight()
-                .horizontalScroll(rememberScrollState(), reverseScrolling = true)
                 .width(canvasWidth)
         ) {
             val ratio = size.height * heightUsed / (chartMax - chartMin)

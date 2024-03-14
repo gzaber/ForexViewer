@@ -1,10 +1,16 @@
 package com.gzaber.forexviewer.ui.chart.composable
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,7 +24,11 @@ fun ForexChart(
     chartType: ChartType,
     timeSeriesValues: List<TimeSeriesValue>,
     modifier: Modifier = Modifier,
-    heightUsed: Double = 0.96
+    heightUsed: Double = 0.96,
+    lastPriceSpace: Int = 0,
+    bodyWidth: Int = 10,
+    bodySpace: Int = 5,
+    scrollState: ScrollState = rememberScrollState()
 ) {
     val chartMin = timeSeriesValues.map {
         it.low
@@ -27,23 +37,47 @@ fun ForexChart(
         it.high
     }.max()
 
-    Box(modifier = modifier.fillMaxSize()) {
-        if (timeSeriesValues.isEmpty()) return@Box
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 1.dp),
+        horizontalAlignment = Alignment.End
+    ) {
+        Row(
+            modifier = Modifier.weight(1f)
+        ) {
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                ForexChartContent(
+                    chartType = chartType,
+                    timeSeriesValues = timeSeriesValues,
+                    chartMin = chartMin,
+                    chartMax = chartMax,
+                    heightUsed = heightUsed,
+                    lastPriceSpace = lastPriceSpace,
+                    bodyWidth = bodyWidth,
+                    bodySpace = bodySpace,
+                    scrollState = scrollState
+                )
 
-        Row(modifier = Modifier.padding(start = 2.dp)) {
-            ForexChartContent(
-                chartType = chartType,
-                timeSeriesValues = timeSeriesValues,
-                chartMin = chartMin,
-                chartMax = chartMax,
-                heightUsed = heightUsed,
-                modifier = Modifier.weight(1f)
-            )
+            }
             ForexChartPrices(
                 chartMin = chartMin,
                 chartMax = chartMax,
                 heightUsed = heightUsed
             )
+        }
+        Row {
+            ForexChartDates(
+                dates = timeSeriesValues.map { it.datetime }.toList(),
+                lastPriceSpace = lastPriceSpace,
+                bodyWidth = bodyWidth,
+                bodySpace = bodySpace,
+                scrollState = scrollState
+            )
+            Spacer(modifier = Modifier.width(55.dp))
         }
     }
 }
