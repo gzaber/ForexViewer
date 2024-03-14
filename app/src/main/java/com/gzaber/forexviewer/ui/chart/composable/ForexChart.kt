@@ -25,7 +25,7 @@ fun ForexChart(
     timeSeriesValues: List<TimeSeriesValue>,
     modifier: Modifier = Modifier,
     heightUsed: Double = 0.96,
-    lastPriceSpace: Int = 0,
+    lastPriceSpace: Int = 120,
     bodyWidth: Int = 10,
     bodySpace: Int = 5,
     scrollState: ScrollState = rememberScrollState()
@@ -75,7 +75,8 @@ fun ForexChart(
                 lastPriceSpace = lastPriceSpace,
                 bodyWidth = bodyWidth,
                 bodySpace = bodySpace,
-                scrollState = scrollState
+                scrollState = scrollState,
+                modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(55.dp))
         }
@@ -91,28 +92,28 @@ fun ForexCandleChartPreview() {
             chartType = ChartType.CANDLE,
             timeSeriesValues = listOf(
                 TimeSeriesValue(
-                    datetime = "1",
+                    datetime = "2024-03-14 12:00:00",
                     high = 1.25,
                     low = 1.15,
                     open = 1.20,
                     close = 1.20,
                 ),
                 TimeSeriesValue(
-                    datetime = "2",
+                    datetime = "2024-03-14 11:00:00",
                     high = 1.25,
                     low = 1.05,
                     open = 1.10,
                     close = 1.20,
                 ),
                 TimeSeriesValue(
-                    datetime = "3",
+                    datetime = "2024-03-14 10:00:00",
                     high = 1.20,
                     low = 1.05,
                     open = 1.15,
                     close = 1.10,
                 ),
                 TimeSeriesValue(
-                    datetime = "4",
+                    datetime = "2024-03-14 09:00:00",
                     high = 1.25,
                     low = 1.10,
                     open = 1.20,
