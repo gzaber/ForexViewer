@@ -32,7 +32,7 @@ fun ForexChartPrices(
         val ratio = size.height * heightUsed / (chartMax - chartMin)
         val step = (chartMax - chartMin) / (pricesNumber - 1)
 
-        repeat(pricesNumber + 1) {
+        repeat(pricesNumber) {
             val measuredText = textMeasurer.measure(
                 String.format(Locale.ENGLISH, "%.4f", chartMax - (it * step))
             )
