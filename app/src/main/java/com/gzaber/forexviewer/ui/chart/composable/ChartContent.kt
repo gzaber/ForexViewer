@@ -1,25 +1,22 @@
 package com.gzaber.forexviewer.ui.chart.composable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
+import com.gzaber.forexviewer.ui.chart.ChartTimeframe
+import com.gzaber.forexviewer.ui.chart.ChartType
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 import com.gzaber.forexviewer.ui.util.model.UiForexPair
 
@@ -27,13 +24,12 @@ import com.gzaber.forexviewer.ui.util.model.UiForexPair
 fun ChartContent(
     uiForexPair: UiForexPair,
     exchangeRate: Double,
-    typesOfChart: List<String>,
-    selectedType: String,
-    timeframes: List<String>,
-    selectedTimeframe: String,
+    timeSeriesValues: List<TimeSeriesValue>,
+    selectedType: ChartType,
+    selectedTimeframe: ChartTimeframe,
     contentPadding: PaddingValues,
-    onChartTypeClick: (String) -> Unit,
-    onChartTimeframeClick: (String) -> Unit,
+    onChartTypeClick: (ChartType) -> Unit,
+    onChartTimeframeClick: (ChartTimeframe) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -50,30 +46,27 @@ fun ChartContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${uiForexPair.base} / ${uiForexPair.quote}",
-             //   fontSize = MaterialTheme.typography.titleLarge.fontSize
+                text = "${uiForexPair.base} / ${uiForexPair.quote}"
             )
             Text(
                 text = "$exchangeRate",
                 fontWeight = FontWeight.Bold
-            //    fontSize = MaterialTheme.typography.titleLarge.fontSize
             )
         }
         ChartHorizontalMenu(
-            values = typesOfChart,
-            selectedValue = selectedType,
-            onValueClick = onChartTypeClick
+            values = ChartType.entries.map { it.toString() },
+            selectedValue = selectedType.name,
+            onValueClick = { onChartTypeClick(ChartType.valueOf(it)) }
         )
-        Box(
-            modifier = Modifier
-                .background(Color.Gray)
-                .fillMaxWidth()
-                .weight(1f)
+        ForexChart(
+            modifier = Modifier.weight(1f),
+            timeSeriesValues = timeSeriesValues,
+            chartType = selectedType
         )
         ChartHorizontalMenu(
-            values = timeframes,
-            selectedValue = selectedTimeframe,
-            onValueClick = onChartTimeframeClick
+            values = ChartTimeframe.entries.map { it.toString() },
+            selectedValue = selectedTimeframe.name,
+            onValueClick = { onChartTimeframeClick(ChartTimeframe.valueOf(it)) }
         )
     }
 }
@@ -89,14 +82,24 @@ fun ChartContentPreview() {
                 quote = "US Dollar"
             ),
             exchangeRate = 1.2365,
-            typesOfChart = listOf(
-                "CANDLE", "BAR", "LINE"
+            selectedType = ChartType.CANDLE,
+            timeSeriesValues = listOf(
+                TimeSeriesValue(
+                    datetime = "1",
+                    high = 1.30,
+                    open = 1.25,
+                    close = 1.20,
+                    low = 1.15
+                ),
+                TimeSeriesValue(
+                    datetime = "2",
+                    high = 1.35,
+                    close = 1.30,
+                    open = 1.20,
+                    low = 1.15
+                )
             ),
-            selectedType = "BAR",
-            timeframes = listOf(
-                "M5", "M15", "H1", "H4", "D1"
-            ),
-            selectedTimeframe = "H1",
+            selectedTimeframe = ChartTimeframe.H1,
             onChartTypeClick = {},
             onChartTimeframeClick = {},
             contentPadding = PaddingValues(0.dp)

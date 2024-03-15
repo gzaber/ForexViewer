@@ -1,15 +1,16 @@
-package com.gzaber.forexviewer.data.source.network
+package com.gzaber.forexviewer.di
 
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val modifiedUrl = originalRequest.url()
             .newBuilder()
             .addQueryParameter(
-                "apikey",
+                PARAMETER_NAME,
                 apiKey
             )
             .build()
@@ -18,5 +19,9 @@ class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
             .build()
 
         return chain.proceed(request)
+    }
+
+    companion object {
+        const val PARAMETER_NAME: String = "apikey"
     }
 }

@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites.composable
+package com.gzaber.forexviewer.ui.home.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,7 +21,10 @@ fun FavoritesList(
         contentPadding = contentPadding,
         modifier = modifier
     ) {
-        items(favorites, key = { it.symbol }) { favorite ->
+        items(
+            favorites,
+            key = { it.symbol }
+        ) { favorite ->
             FavoriteListItem(
                 favorite = favorite,
                 onClick = onListItemClick,
@@ -52,7 +55,7 @@ fun ForexPairsListPreview() {
                     symbol = "USD/JPY",
                     base = "US Dollar",
                     quote = "Japanese Yen",
-                    exchangeRate = 144.8734
+                    exchangeRate = 0.0
                 )
             ),
             contentPadding = PaddingValues(16.dp),

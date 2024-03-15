@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.gzaber.forexviewer.R
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
-import com.gzaber.forexviewer.ui.util.model.UiForexPair
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +23,8 @@ fun ChartAppBar(
     isFavorite: Boolean,
     onBackClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
@@ -40,7 +40,10 @@ fun ChartAppBar(
             }
         },
         actions = {
-            IconButton(onClick = onFavoriteClick) {
+            IconButton(
+                onClick = onFavoriteClick,
+                enabled = !isLoading
+            ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = stringResource(id = R.string.favorite)

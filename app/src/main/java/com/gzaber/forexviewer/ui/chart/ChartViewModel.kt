@@ -5,43 +5,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
+import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.ui.navigation.ForexViewerDestinationArgs
-import com.gzaber.forexviewer.ui.util.model.toUiModel
+import com.gzaber.forexviewer.ui.util.model.toFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class ChartStatus {
-    LOADING, SUCCESS, FAILURE
-}
 
 enum class ChartType {
     CANDLE, BAR, LINE
 }
 
-enum class ChartTimeframe {
-    M5, M15, H1, H4, D1
+enum class ChartTimeframe(val apiParam: String) {
+    M5("5min"),
+    M15("15min"),
+    H1("1h"),
+    H4("4h"),
+    D1("1day")
 }
 
 data class ChartUiState(
-    val status: ChartStatus = ChartStatus.LOADING,
+    val isLoading: Boolean = true,
     val symbol: String = "",
     val uiForexPair: UiForexPair = UiForexPair(),
     val exchangeRate: Double = 0.0,
+    val timeSeriesValues: List<TimeSeriesValue> = listOf(),
     val chartType: ChartType = ChartType.CANDLE,
     val chartTimeframe: ChartTimeframe = ChartTimeframe.H1,
-    val failureMessage: String = "",
+    val failureMessage: String? = null,
 )
 
 @HiltViewModel
 class ChartViewModel @Inject constructor(
-    forexDataRepository: ForexDataRepository,
+    private val forexDataRepository: ForexDataRepository,
     private val favoritesRepository: FavoritesRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -49,40 +50,32 @@ class ChartViewModel @Inject constructor(
     private val _symbol: String =
         (savedStateHandle[ForexViewerDestinationArgs.SYMBOL_ARG] ?: "")
             .replace("_", "/")
-    private val _chartType = MutableStateFlow(ChartType.CANDLE)
-    private val _chartTimeframe = MutableStateFlow(ChartTimeframe.H1)
 
-    val uiState = combine(
-        favoritesRepository.loadAllFavorites(),
-        forexDataRepository.fetchForexPair(_symbol),
-        forexDataRepository.fetchExchangeRate(_symbol),
-        _chartType,
-        _chartTimeframe
-    ) { favorites, forexPair, exchangeRate, type, timeframe ->
-        ChartUiState(
-            status = ChartStatus.SUCCESS,
-            uiForexPair = forexPair.toUiModel(
-                isFavorite = favorites.any { it.symbol == _symbol },
-                favoriteId = favorites.find { it.symbol == _symbol }?.id
-            ),
-            symbol = _symbol,
-            exchangeRate = exchangeRate.rate,
-            chartType = type,
-            chartTimeframe = timeframe
-        )
-    }
-        .catch {
-            ChartUiState(
-                status = ChartStatus.FAILURE,
-                symbol = _symbol,
-                failureMessage = it.message ?: ""
-            )
+    private val _uiState = MutableStateFlow(ChartUiState(symbol = _symbol))
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        collectTimeSeries()
+
+        viewModelScope.launch {
+            favoritesRepository.loadFavoriteBySymbol(_symbol)
+                .catch { e ->
+                    _uiState.update {
+                        it.copy(failureMessage = e.message)
+                    }
+                }
+                .collect { favorite ->
+                    _uiState.update {
+                        it.copy(
+                            uiForexPair = it.uiForexPair.copy(
+                                isFavorite = favorite != null,
+                                favoriteId = favorite?.id
+                            )
+                        )
+                    }
+                }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = ChartUiState(symbol = _symbol)
-        )
+    }
 
     fun toggleFavorite(uiForexPair: UiForexPair) {
         viewModelScope.launch {
@@ -93,16 +86,57 @@ class ChartViewModel @Inject constructor(
                     favoritesRepository.insertFavorite(uiForexPair.toFavorite())
                 }
             } catch (e: Throwable) {
-                // TODO: do something
+                _uiState.update {
+                    it.copy(failureMessage = e.message)
+                }
             }
         }
     }
 
-    fun onTypeChanged(type: String) {
-        _chartType.value = ChartType.valueOf(type)
+    fun onTypeChanged(type: ChartType) {
+        _uiState.update {
+            it.copy(chartType = type)
+        }
     }
 
-    fun onTimeframeChanged(timeframe: String) {
-        _chartTimeframe.value = ChartTimeframe.valueOf(timeframe)
+    fun onTimeframeChanged(timeframe: ChartTimeframe) {
+        _uiState.update {
+            it.copy(chartTimeframe = timeframe)
+        }
+        collectTimeSeries()
+    }
+
+    fun snackbarMessageShown() {
+        _uiState.update {
+            it.copy(failureMessage = null)
+        }
+    }
+
+    private fun collectTimeSeries() {
+        viewModelScope.launch {
+            forexDataRepository.fetchTimeSeries(
+                _symbol,
+                _uiState.value.chartTimeframe.apiParam,
+                100
+            )
+                .catch { e ->
+                    _uiState.update {
+                        it.copy(failureMessage = e.message)
+                    }
+                }.collect { timeSeries ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            uiForexPair = it.uiForexPair.copy(
+                                symbol = timeSeries.meta.symbol,
+                                base = timeSeries.meta.base,
+                                quote = timeSeries.meta.quote,
+                            ),
+                            timeSeriesValues = timeSeries.values,
+                            exchangeRate = timeSeries.values.first().close
+                        )
+                    }
+                }
+        }
     }
 }

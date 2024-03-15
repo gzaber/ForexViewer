@@ -10,15 +10,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.gzaber.forexviewer.ui.chart.ChartScreen
-import com.gzaber.forexviewer.ui.favorites.FavoritesScreen
 import com.gzaber.forexviewer.ui.forexpairs.ForexPairsScreen
+import com.gzaber.forexviewer.ui.home.HomeScreen
 import com.gzaber.forexviewer.ui.navigation.ForexViewerDestinationArgs.SYMBOL_ARG
 
 @Composable
 fun ForexViewerNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ForexViewerDestinations.FAVORITES_ROUTE,
+    startDestination: String = ForexViewerDestinations.HOME_ROUTE,
     navActions: ForexViewerNavigationActions = remember(navController) {
         ForexViewerNavigationActions(navController)
     }
@@ -29,10 +29,9 @@ fun ForexViewerNavGraph(
         modifier = modifier
     ) {
         composable(
-            route = ForexViewerDestinations.FAVORITES_ROUTE
+            route = ForexViewerDestinations.HOME_ROUTE
         ) {
-            FavoritesScreen(
-                onApiKeyClick = {},
+            HomeScreen(
                 onForexPairsClick = {
                     navActions.navigateToForexPairs()
                 },

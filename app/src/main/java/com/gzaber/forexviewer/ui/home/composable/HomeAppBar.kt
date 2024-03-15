@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.favorites.composable
+package com.gzaber.forexviewer.ui.home.composable
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
@@ -18,7 +18,7 @@ import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritesAppBar(
+fun HomeAppBar(
     onApiKeyClick: () -> Unit,
     onForexPairsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -29,7 +29,7 @@ fun FavoritesAppBar(
             Text(
                 text = stringResource(id = R.string.app_name),
                 fontWeight = FontWeight.Bold
-                )
+            )
         },
         navigationIcon = {
             IconButton(onClick = onApiKeyClick) {
@@ -52,9 +52,9 @@ fun FavoritesAppBar(
 
 @Preview
 @Composable
-fun FavoritesAppBarPreview() {
+fun HomeAppBarPreview() {
     ForexViewerTheme {
-        FavoritesAppBar(
+        HomeAppBar(
             onApiKeyClick = {},
             onForexPairsClick = {}
         )
