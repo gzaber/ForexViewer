@@ -50,6 +50,16 @@ fun ForexChart(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.CenterEnd
             ) {
+                ForexChartGrid(
+                    horizontalLines = 8,
+                    verticalLineFrequency = 10,
+                    dataSize = timeSeriesValues.size,
+                    heightUsed = heightUsed,
+                    lastPriceSpace = lastPriceSpace,
+                    bodyWidth = bodyWidth,
+                    bodySpace = bodySpace,
+                    scrollState = scrollState
+                )
                 ForexChartContent(
                     chartType = chartType,
                     timeSeriesValues = timeSeriesValues,
