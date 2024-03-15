@@ -28,6 +28,8 @@ fun ForexChart(
     lastPriceSpace: Int = 120,
     bodyWidth: Int = 10,
     bodySpace: Int = 5,
+    horizontalLabelsNumber: Int = 8,
+    verticalLabelsFrequency: Int = 10,
     scrollState: ScrollState = rememberScrollState()
 ) {
     val chartMin = timeSeriesValues.map {
@@ -51,8 +53,8 @@ fun ForexChart(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 ForexChartGrid(
-                    horizontalLines = 8,
-                    verticalLineFrequency = 10,
+                    horizontalLinesNumber = horizontalLabelsNumber,
+                    verticalLinesFrequency = verticalLabelsFrequency,
                     dataSize = timeSeriesValues.size,
                     heightUsed = heightUsed,
                     lastPriceSpace = lastPriceSpace,
@@ -76,6 +78,7 @@ fun ForexChart(
             ForexChartPrices(
                 chartMin = chartMin,
                 chartMax = chartMax,
+                priceLabelsNumber = horizontalLabelsNumber,
                 heightUsed = heightUsed
             )
         }
@@ -85,6 +88,7 @@ fun ForexChart(
                 lastPriceSpace = lastPriceSpace,
                 bodyWidth = bodyWidth,
                 bodySpace = bodySpace,
+                dateLabelsFrequency = verticalLabelsFrequency,
                 scrollState = scrollState,
                 modifier = Modifier.weight(1f)
             )

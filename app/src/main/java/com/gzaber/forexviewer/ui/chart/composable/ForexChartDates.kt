@@ -23,8 +23,8 @@ fun ForexChartDates(
     lastPriceSpace: Int,
     bodyWidth: Int,
     bodySpace: Int,
+    dateLabelsFrequency: Int,
     modifier: Modifier = Modifier,
-    dateLabelFrequency: Int = 10,
     dateSeparatorHeight: Float = 10f,
     scrollState: ScrollState = rememberScrollState(),
     textMeasurer: TextMeasurer = rememberTextMeasurer()
@@ -42,7 +42,7 @@ fun ForexChartDates(
                 .width(canvasWidth)
         ) {
             repeat(dates.size) { index ->
-                if (index == 0 || index % dateLabelFrequency == 0) {
+                if (index == 0 || index % dateLabelsFrequency == 0) {
                     val measuredText = textMeasurer.measure(
                         dates[index]
                     )

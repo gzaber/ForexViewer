@@ -17,9 +17,9 @@ import java.util.Locale
 fun ForexChartPrices(
     chartMin: Double,
     chartMax: Double,
+    priceLabelsNumber: Int,
     heightUsed: Double,
     modifier: Modifier = Modifier,
-    pricesNumber: Int = 8,
     priceSeparatorWidth: Float = 10f,
     textMeasurer: TextMeasurer = rememberTextMeasurer()
 ) {
@@ -30,9 +30,9 @@ fun ForexChartPrices(
             .fillMaxHeight()
     ) {
         val ratio = size.height * heightUsed / (chartMax - chartMin)
-        val step = (chartMax - chartMin) / (pricesNumber - 1)
+        val step = (chartMax - chartMin) / (priceLabelsNumber - 1)
 
-        repeat(pricesNumber) {
+        repeat(priceLabelsNumber) {
             val measuredText = textMeasurer.measure(
                 String.format(Locale.ENGLISH, "%.4f", chartMax - (it * step))
             )

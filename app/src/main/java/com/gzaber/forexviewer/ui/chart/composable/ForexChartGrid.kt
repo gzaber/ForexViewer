@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ForexChartGrid(
-    horizontalLines: Int,
-    verticalLineFrequency: Int,
+    horizontalLinesNumber: Int,
+    verticalLinesFrequency: Int,
     dataSize: Int,
     heightUsed: Double,
     lastPriceSpace: Int,
@@ -32,9 +32,9 @@ fun ForexChartGrid(
             .width(canvasWidth)
             .fillMaxHeight()
     ) {
-        repeat(horizontalLines) { index ->
+        repeat(horizontalLinesNumber) { index ->
             val yOffset = (1 - heightUsed) / 2 * size.height
-            val yStep = size.height * heightUsed / (horizontalLines - 1)
+            val yStep = size.height * heightUsed / (horizontalLinesNumber - 1)
             val baseOffset = Offset(
                 x = 0f,
                 y = (yOffset + yStep * index).toFloat()
@@ -49,7 +49,7 @@ fun ForexChartGrid(
         }
 
         repeat(dataSize) { index ->
-            if (index == 0 || index % verticalLineFrequency == 0) {
+            if (index == 0 || index % verticalLinesFrequency == 0) {
                 val baseOffset = Offset(
                     x = size.width - ((bodyWidth + bodySpace) * (index + 1) + lastPriceSpace - bodyWidth / 2).dp.toPx(),
                     y = 0f
