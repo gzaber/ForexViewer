@@ -18,14 +18,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class HomeUiState(
-    val uiFavorites: List<UiFavorite> = listOf(),
-    val showDialog: Boolean = false,
-    val apiKeyText: String = "",
-    val isLoading: Boolean = true,
-    val failureMessage: String? = null,
-)
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     forexDataRepository: ForexDataRepository,
