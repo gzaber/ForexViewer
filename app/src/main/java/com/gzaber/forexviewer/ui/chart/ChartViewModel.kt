@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
-import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.ui.navigation.ForexViewerDestinationArgs
 import com.gzaber.forexviewer.ui.util.model.toFavorite
@@ -16,29 +15,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class ChartType {
-    CANDLE, BAR, LINE
-}
-
-enum class ChartTimeframe(val apiParam: String) {
-    M5("5min"),
-    M15("15min"),
-    H1("1h"),
-    H4("4h"),
-    D1("1day")
-}
-
-data class ChartUiState(
-    val isLoading: Boolean = true,
-    val symbol: String = "",
-    val uiForexPair: UiForexPair = UiForexPair(),
-    val exchangeRate: Double = 0.0,
-    val timeSeriesValues: List<TimeSeriesValue> = listOf(),
-    val chartType: ChartType = ChartType.CANDLE,
-    val chartTimeframe: ChartTimeframe = ChartTimeframe.H1,
-    val failureMessage: String? = null,
-)
 
 @HiltViewModel
 class ChartViewModel @Inject constructor(
