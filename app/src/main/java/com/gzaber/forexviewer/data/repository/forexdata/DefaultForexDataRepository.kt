@@ -2,7 +2,6 @@ package com.gzaber.forexviewer.data.repository.forexdata
 
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
-import com.gzaber.forexviewer.data.repository.forexdata.model.Quote
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
 import com.gzaber.forexviewer.data.repository.forexdata.model.toModel
 import com.gzaber.forexviewer.data.source.network.ForexDataApiService
@@ -25,26 +24,10 @@ class DefaultForexDataRepository @Inject constructor(
         }
     }
 
-    override fun fetchForexPair(symbol: String): Flow<ForexPair> = flow {
-        while (true) {
-            val forexPair = forexDataNetworkDataSource.fetchForexPair(symbol).data.first().toModel()
-            emit(forexPair)
-            delay(REFRESH_INTERVALS_MS)
-        }
-    }
-
     override fun fetchExchangeRate(symbol: String): Flow<ExchangeRate> = flow {
         while (true) {
             val exchangeRate = forexDataNetworkDataSource.fetchExchangeRate(symbol).toModel()
             emit(exchangeRate)
-            delay(REFRESH_INTERVALS_MS)
-        }
-    }
-
-    override fun fetchQuote(symbol: String, interval: String): Flow<Quote> = flow {
-        while (true) {
-            val quote = forexDataNetworkDataSource.fetchQuote(symbol, interval).toModel()
-            emit(quote)
             delay(REFRESH_INTERVALS_MS)
         }
     }
