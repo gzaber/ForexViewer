@@ -3,7 +3,7 @@ package com.gzaber.forexviewer.data.repository.apikey
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.preferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -16,7 +16,7 @@ class DefaultApiKeyRepository @Inject constructor(
 
     override fun loadApiKey(): Flow<String> = dataStore.data
         .catch {
-            emit(emptyPreferences())
+            emit(preferencesOf(API_KEY to DEMO_API_KEY))
         }
         .map { preferences ->
             preferences[API_KEY] ?: DEMO_API_KEY
