@@ -20,7 +20,7 @@ class DefaultForexDataRepository @Inject constructor(
                 it.toModel()
             }
             emit(allForexPairs)
-            delay(REFRESH_INTERVALS_MS)
+            delay(REFRESH_INTERVAL_MS)
         }
     }
 
@@ -28,7 +28,7 @@ class DefaultForexDataRepository @Inject constructor(
         while (true) {
             val exchangeRate = forexDataNetworkDataSource.fetchExchangeRate(symbol).toModel()
             emit(exchangeRate)
-            delay(REFRESH_INTERVALS_MS)
+            delay(REFRESH_INTERVAL_MS)
         }
     }
 
@@ -44,11 +44,11 @@ class DefaultForexDataRepository @Inject constructor(
                 outputSize
             ).toModel()
             emit(timeSeries)
-            delay(REFRESH_INTERVALS_MS)
+            delay(REFRESH_INTERVAL_MS)
         }
     }
 
     companion object {
-        const val REFRESH_INTERVALS_MS: Long = 60_000
+        const val REFRESH_INTERVAL_MS: Long = 60_000
     }
 }
