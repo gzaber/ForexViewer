@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gzaber.forexviewer.data.repository.apikey.ApiKeyRepository
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
+import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.ui.util.model.UiFavorite
@@ -12,15 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    forexDataRepository: ForexDataRepository,
+    private val forexDataRepository: ForexDataRepository,
     favoritesRepository: FavoritesRepository,
     private val apiKeyRepository: ApiKeyRepository
 ) : ViewModel() {
@@ -33,11 +33,11 @@ class HomeViewModel @Inject constructor(
 
     val uiState = combine(
         _uiFavorites,
-        _apiKeyText,
         _showDialog,
+        _apiKeyText,
         _isLoading,
-        _failureMessage,
-    ) { uiFavorites, apiKeyText, showDialog, isLoading, failureMessage ->
+        _failureMessage
+    ) { uiFavorites, showDialog, apiKeyText, isLoading, failureMessage ->
         HomeUiState(
             uiFavorites, showDialog, apiKeyText, isLoading, failureMessage
         )
@@ -65,33 +65,47 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 favoritesRepository.loadAllFavorites()
-                    .map { favorites ->
-                        favorites.map { favorite ->
-                            forexDataRepository.fetchExchangeRate(favorite.symbol)
-                                .catch {
-                                    _failureMessage.value = it.message
-                                    emit(ExchangeRate(favorite.symbol, 0.0))
-                                }
-                                .map { exchangeRate ->
-                                    UiFavorite(
-                                        symbol = favorite.symbol,
-                                        base = favorite.base,
-                                        quote = favorite.quote,
-                                        exchangeRate = exchangeRate.rate
-                                    )
-                                }.first()
-                        }
-                    }
                     .catch {
                         _failureMessage.value = it.message
                     }
-                    .collect { uiFavorites ->
+                    .collect { favorites ->
                         _isLoading.value = false
-                        _uiFavorites.value = uiFavorites
+                        favorites.forEach { favorite ->
+                            collectUiFavorites(favorite)
+                        }
                     }
             } catch (e: Exception) {
                 _failureMessage.value = e.message
             }
+        }
+    }
+
+    private fun collectUiFavorites(favorite: Favorite) {
+        viewModelScope.launch {
+            forexDataRepository.fetchExchangeRate(favorite.symbol)
+                .catch {
+                    _failureMessage.value = it.message
+                    emit(ExchangeRate(favorite.symbol, 0.0))
+                }.collect { exchangeRate ->
+                    val uiFavorite = UiFavorite(
+                        symbol = favorite.symbol,
+                        base = favorite.base,
+                        quote = favorite.quote,
+                        exchangeRate = exchangeRate.rate
+                    )
+
+                    _uiFavorites.update { favorites ->
+                        val mutableUiFavorites = favorites.toMutableList()
+                        if (_uiFavorites.value.find { it.symbol == favorite.symbol } == null) {
+                            mutableUiFavorites.add(uiFavorite)
+                        } else {
+                            val index =
+                                mutableUiFavorites.indexOfFirst { it.symbol == uiFavorite.symbol }
+                            mutableUiFavorites[index] = uiFavorite
+                        }
+                        mutableUiFavorites
+                    }
+                }
         }
     }
 
