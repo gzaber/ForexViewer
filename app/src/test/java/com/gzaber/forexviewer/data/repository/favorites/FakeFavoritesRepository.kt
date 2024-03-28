@@ -17,11 +17,27 @@ class FakeFavoritesRepository(initialFavorites: List<Favorite> = listOf()) : Fav
     }
 
     override suspend fun insertFavorite(favorite: Favorite) {
-        throw NotImplementedError()
+        if (_shouldThrowError.value) {
+            throw Exception("failure")
+        } else {
+            _favorites.update {
+                val updated = it.toMutableList()
+                updated.add(favorite)
+                updated
+            }
+        }
     }
 
     override suspend fun deleteFavorite(favorite: Favorite) {
-        throw NotImplementedError()
+        if (_shouldThrowError.value) {
+            throw Exception("failure")
+        } else {
+            _favorites.update {
+                val updated = it.toMutableList()
+                updated.remove(favorite)
+                updated
+            }
+        }
     }
 
     override fun loadFavoriteBySymbol(symbol: String): Flow<Favorite?> = flow {

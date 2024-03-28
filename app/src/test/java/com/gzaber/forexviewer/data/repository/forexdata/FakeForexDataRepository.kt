@@ -17,6 +17,7 @@ class FakeForexDataRepository(
     private val timeSeries: TimeSeries = emptyTimeSeries()
 ) : ForexDataRepository {
 
+    private val _forexPairs = MutableStateFlow(forexPairs)
     private val _exchangeRate = MutableStateFlow(exchangeRate)
     private val _shouldThrowError = MutableStateFlow(false)
 
@@ -24,9 +25,14 @@ class FakeForexDataRepository(
         _shouldThrowError.update { value }
     }
 
-    override fun fetchAllForexPairs(): Flow<List<ForexPair>> = flow {
-        emit(forexPairs)
-    }
+    override fun fetchAllForexPairs(): Flow<List<ForexPair>> =
+        combine(_forexPairs, _shouldThrowError) { forexPairs, shouldThrow ->
+            if (shouldThrow) {
+                throw Exception("failure")
+            } else {
+                forexPairs
+            }
+        }
 
     override fun fetchExchangeRate(symbol: String): Flow<ExchangeRate> =
         combine(_exchangeRate, _shouldThrowError) { exchangeRate, shouldThrow ->
