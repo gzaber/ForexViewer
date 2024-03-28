@@ -42,9 +42,6 @@ class HomeViewModel @Inject constructor(
             uiFavorites, showDialog, apiKeyText, isLoading, failureMessage
         )
     }
-        .catch {
-            _failureMessage.value = it.message
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -63,20 +60,16 @@ class HomeViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            try {
-                favoritesRepository.loadAllFavorites()
-                    .catch {
-                        _failureMessage.value = it.message
+            favoritesRepository.loadAllFavorites()
+                .catch {
+                    _failureMessage.value = it.message
+                }
+                .collect { favorites ->
+                    _isLoading.value = false
+                    favorites.forEach { favorite ->
+                        collectUiFavorites(favorite)
                     }
-                    .collect { favorites ->
-                        _isLoading.value = false
-                        favorites.forEach { favorite ->
-                            collectUiFavorites(favorite)
-                        }
-                    }
-            } catch (e: Exception) {
-                _failureMessage.value = e.message
-            }
+                }
         }
     }
 
