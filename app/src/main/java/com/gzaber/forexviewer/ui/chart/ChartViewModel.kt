@@ -31,7 +31,9 @@ class ChartViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        collectTimeSeries()
+        if (_symbol.isNotEmpty()) {
+            collectTimeSeries()
+        }
 
         viewModelScope.launch {
             favoritesRepository.loadFavoriteBySymbol(_symbol)

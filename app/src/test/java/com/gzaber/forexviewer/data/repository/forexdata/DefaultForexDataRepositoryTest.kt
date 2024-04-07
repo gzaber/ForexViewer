@@ -9,6 +9,8 @@ import com.gzaber.forexviewer.data.source.network.model.NetworkTimeSeries
 import com.gzaber.forexviewer.data.source.network.model.NetworkTimeSeriesMeta
 import com.gzaber.forexviewer.data.source.network.model.NetworkTimeSeriesValue
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -64,7 +66,7 @@ class DefaultForexDataRepositoryTest {
     private lateinit var repository: DefaultForexDataRepository
 
     @Before
-    fun createRepository() {
+    fun setupRepository() {
         networkDataSource = FakeForexDataApiService(
             networkForexPairsList = networkForexPairsList,
             networkExchangeRate = networkExchangeRate,
@@ -75,14 +77,19 @@ class DefaultForexDataRepositoryTest {
 
     @Test
     fun fetchAllForexPairs_emitsFromNetworkDataSource() = runTest {
-        val result = repository.fetchAllForexPairs().first()
-        assert(result == listOf(networkForexPair1.toModel(), networkForexPair2.toModel()))
+        val forexPairs = listOf(networkForexPair1.toModel(), networkForexPair2.toModel())
+        val result = repository.fetchAllForexPairs().take(2)
+
+        assert(result.first() == forexPairs)
+        assert(result.last() == forexPairs)
     }
 
     @Test
     fun fetchExchangeRate_emitsFromNetworkDataSource() = runTest {
-        val result = repository.fetchExchangeRate(networkExchangeRate.symbol).first()
-        assert(result == networkExchangeRate.toModel())
+        val result = repository.fetchExchangeRate(networkExchangeRate.symbol).take(2)
+
+        assert(result.first() == networkExchangeRate.toModel())
+        assert(result.last() == networkExchangeRate.toModel())
     }
 
     @Test
@@ -91,7 +98,9 @@ class DefaultForexDataRepositoryTest {
             networkTimeSeriesMeta.symbol,
             networkTimeSeriesMeta.interval,
             networkTimeSeriesValues.size
-        ).first()
-        assert(result == networkTimeSeries.toModel())
+        ).take(2)
+
+        assert(result.first() == networkTimeSeries.toModel())
+        assert(result.last() == networkTimeSeries.toModel())
     }
 }
