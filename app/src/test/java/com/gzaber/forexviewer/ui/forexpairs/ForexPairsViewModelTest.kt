@@ -71,7 +71,7 @@ class ForexPairsViewModelTest {
 
     @Test
     fun init_favoritesRepositoryThrowsException_emitsFailureMessage() = runTest {
-        favoritesRepository.setShouldThrowError(true)
+        favoritesRepository.setShouldThrowFlowError(true)
 
         assert(viewModel.uiState.value.failureMessage == "failure")
     }
@@ -93,7 +93,7 @@ class ForexPairsViewModelTest {
 
     @Test
     fun toggleFavorite_favoritesRepositoryThrowsException_emitsFailureMessage() = runTest {
-        favoritesRepository.setShouldThrowError(true)
+        favoritesRepository.setShouldThrowAsyncError(true)
         viewModel.toggleFavorite(viewModel.uiState.value.uiForexPairs.first())
 
         assert(viewModel.uiState.value.uiForexPairs.first().isFavorite)
@@ -119,13 +119,15 @@ class ForexPairsViewModelTest {
     fun onSearchTextCleared_emitsClearedSearchText() = runTest {
         viewModel.onSearchTextChanged("PLN")
         assert(viewModel.uiState.value.searchText == "PLN")
+
         viewModel.onSearchTextCleared()
         assert(viewModel.uiState.value.searchText == "")
     }
 
     @Test
     fun snackbarMessageShown_emitsResetFailureMessage() = runTest {
-        favoritesRepository.setShouldThrowError(true)
+        favoritesRepository.setShouldThrowFlowError(true)
+
         assert(viewModel.uiState.value.failureMessage == "failure")
         viewModel.snackbarMessageShown()
         assert(viewModel.uiState.value.failureMessage == null)

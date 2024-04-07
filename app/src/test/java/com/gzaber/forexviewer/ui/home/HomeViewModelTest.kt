@@ -65,7 +65,6 @@ class HomeViewModelTest {
         }
 
         apiKeyRepository.setShouldThrowError(true)
-
         assert(viewModel.uiState.value.failureMessage == "failure")
     }
 
@@ -86,8 +85,7 @@ class HomeViewModelTest {
             viewModel.uiState.collect()
         }
 
-        favoritesRepository.setShouldThrowError(true)
-
+        favoritesRepository.setShouldThrowFlowError(true)
         assert(viewModel.uiState.value.failureMessage == "failure")
     }
 
@@ -98,7 +96,6 @@ class HomeViewModelTest {
         }
 
         forexDataRepository.setShouldThrowError(true)
-
         assert(viewModel.uiState.value.failureMessage == "failure")
     }
 
