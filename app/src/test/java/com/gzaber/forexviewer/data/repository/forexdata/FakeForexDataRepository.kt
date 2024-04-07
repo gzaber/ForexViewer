@@ -8,17 +8,17 @@ import com.gzaber.forexviewer.util.emptyTimeSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 
 class FakeForexDataRepository(
-    private val forexPairs: List<ForexPair> = listOf(),
+    forexPairs: List<ForexPair> = listOf(),
     exchangeRate: ExchangeRate = emptyExchangeRate(),
-    private val timeSeries: TimeSeries = emptyTimeSeries()
+    timeSeries: TimeSeries = emptyTimeSeries()
 ) : ForexDataRepository {
 
     private val _forexPairs = MutableStateFlow(forexPairs)
     private val _exchangeRate = MutableStateFlow(exchangeRate)
+    private val _timeSeries = MutableStateFlow(timeSeries)
     private val _shouldThrowError = MutableStateFlow(false)
 
     fun setShouldThrowError(value: Boolean) {
@@ -47,7 +47,11 @@ class FakeForexDataRepository(
         symbol: String,
         interval: String,
         outputSize: Int
-    ): Flow<TimeSeries> = flow {
-        emit(timeSeries)
+    ): Flow<TimeSeries> = combine(_timeSeries, _shouldThrowError) { timeSeries, shouldThrow ->
+        if (shouldThrow) {
+            throw Exception("failure")
+        } else {
+            timeSeries
+        }
     }
 }
