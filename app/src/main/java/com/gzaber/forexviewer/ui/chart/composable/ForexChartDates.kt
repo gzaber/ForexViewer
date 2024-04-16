@@ -12,10 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+
+const val TAG_FOREX_CHART_DATES = "forexChartDatesTag"
 
 @Composable
 fun ForexChartDates(
@@ -32,7 +35,7 @@ fun ForexChartDates(
     val canvasWidth = ((bodyWidth + bodySpace) * dates.size + lastPriceSpace).dp
 
     Box(
-        modifier = modifier,
+        modifier = modifier.testTag(TAG_FOREX_CHART_DATES),
         contentAlignment = Alignment.CenterEnd
     ) {
         Canvas(

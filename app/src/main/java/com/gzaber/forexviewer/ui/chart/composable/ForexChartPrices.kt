@@ -7,11 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import java.util.Locale
+
+const val TAG_FOREX_CHART_PRICES = "forexChartPricesTag"
 
 @Composable
 fun ForexChartPrices(
@@ -26,6 +29,7 @@ fun ForexChartPrices(
 
     Canvas(
         modifier = modifier
+            .testTag(TAG_FOREX_CHART_PRICES)
             .width(55.dp)
             .fillMaxHeight()
     ) {
