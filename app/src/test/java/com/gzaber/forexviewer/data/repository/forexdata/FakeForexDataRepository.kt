@@ -5,6 +5,7 @@ import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
 import com.gzaber.forexviewer.util.emptyExchangeRate
 import com.gzaber.forexviewer.util.emptyTimeSeries
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -21,8 +22,14 @@ class FakeForexDataRepository(
     private val _timeSeries = MutableStateFlow(timeSeries)
     private val _shouldThrowError = MutableStateFlow(false)
 
+    private var _timeMillisDelay: Long = 0
+
     fun setShouldThrowError(value: Boolean) {
         _shouldThrowError.update { value }
+    }
+
+    fun setDelay(timeMillis: Long) {
+        _timeMillisDelay = timeMillis
     }
 
     override fun fetchAllForexPairs(): Flow<List<ForexPair>> =
@@ -30,6 +37,7 @@ class FakeForexDataRepository(
             if (shouldThrow) {
                 throw Exception("failure")
             } else {
+                delay(_timeMillisDelay)
                 forexPairs
             }
         }
@@ -39,6 +47,7 @@ class FakeForexDataRepository(
             if (shouldThrow) {
                 throw Exception("failure")
             } else {
+                delay(_timeMillisDelay)
                 exchangeRate
             }
         }
@@ -51,6 +60,7 @@ class FakeForexDataRepository(
         if (shouldThrow) {
             throw Exception("failure")
         } else {
+            delay(_timeMillisDelay)
             timeSeries
         }
     }
