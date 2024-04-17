@@ -10,7 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+
+const val TAG_FOREX_CHART_GRID = "forexChartGridTag"
 
 @Composable
 fun ForexChartGrid(
@@ -28,6 +31,7 @@ fun ForexChartGrid(
 
     Canvas(
         modifier = modifier
+            .testTag(TAG_FOREX_CHART_GRID)
             .horizontalScroll(scrollState, reverseScrolling = true)
             .width(canvasWidth)
             .fillMaxHeight()

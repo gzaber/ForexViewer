@@ -12,12 +12,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.ui.chart.ChartType
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
 
+const val TAG_FOREX_CHART = "forexChartTag"
 
 @Composable
 fun ForexChart(
@@ -41,6 +43,7 @@ fun ForexChart(
 
     Column(
         modifier = modifier
+            .testTag(TAG_FOREX_CHART)
             .fillMaxSize()
             .padding(start = 1.dp),
         horizontalAlignment = Alignment.End

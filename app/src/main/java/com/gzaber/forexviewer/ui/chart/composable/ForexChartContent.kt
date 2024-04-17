@@ -15,11 +15,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.ui.chart.ChartType
 import com.gzaber.forexviewer.ui.chart.extension.drawBar
 import com.gzaber.forexviewer.ui.chart.extension.drawCandle
+
+const val TAG_FOREX_CHART_CONTENT = "forexChartContentTag"
 
 @Composable
 fun ForexChartContent(
@@ -36,6 +39,7 @@ fun ForexChartContent(
 ) {
     Box(
         modifier = modifier
+            .testTag(TAG_FOREX_CHART_CONTENT)
             .border(width = 1.dp, color = Color.Gray),
         contentAlignment = Alignment.CenterEnd
     )
