@@ -19,8 +19,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue
 import com.gzaber.forexviewer.ui.chart.ChartType
-import com.gzaber.forexviewer.ui.chart.extension.drawBar
-import com.gzaber.forexviewer.ui.chart.extension.drawCandle
+import com.gzaber.forexviewer.ui.util.extension.drawBar
+import com.gzaber.forexviewer.ui.util.extension.drawCandle
 
 const val TAG_FOREX_CHART_CONTENT = "forexChartContentTag"
 

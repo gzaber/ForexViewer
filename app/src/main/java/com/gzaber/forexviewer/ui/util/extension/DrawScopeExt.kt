@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.ui.chart.extension
+package com.gzaber.forexviewer.ui.util.extension
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
