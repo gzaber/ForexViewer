@@ -6,8 +6,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.gzaber.forexviewer.ui.theme.ForexViewerTheme
+
+const val TAG_API_KEY_DIALOG = "apiKeyDialogTag"
 
 @Composable
 fun ApiKeyDialog(
@@ -21,7 +24,7 @@ fun ApiKeyDialog(
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier.testTag(TAG_API_KEY_DIALOG),
         title = {
             Text(title)
         },
