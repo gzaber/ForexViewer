@@ -47,7 +47,7 @@ class ForexPairsScreenTest {
     @get:Rule(order = 1)
     val composeTestRule = createComposeRule()
 
-    private fun setupForexPairsScree(timeMillisDelay: Long = 0) {
+    private fun setupForexPairsScreen(timeMillisDelay: Long = 0) {
         favoritesRepository =
             FakeFavoritesRepository(initialFavorites = listOf(favorite))
         forexDataRepository =
@@ -69,14 +69,14 @@ class ForexPairsScreenTest {
 
     @Test
     fun appBarTitle_isDisplayed() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         composeTestRule.onNodeWithText("Forex pairs").assertIsDisplayed()
     }
 
     @Test
     fun onBackClick_isInvoked_whenClicked() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         assert(isOnBackClicked.not())
         composeTestRule.onNodeWithContentDescription("Navigate back").assertIsDisplayed()
@@ -86,14 +86,14 @@ class ForexPairsScreenTest {
 
     @Test
     fun loadingBox_isDisplayed_whenDataIsLoading() {
-        setupForexPairsScree(100)
+        setupForexPairsScreen(100)
 
         composeTestRule.onNodeWithTag(TAG_LOADING_BOX).assertIsDisplayed()
     }
 
     @Test
     fun snackbar_showsMessage_whenFavoritesRepositoryFlowErrorOccured() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
         favoritesRepository.setShouldThrowFlowError(true)
 
         composeTestRule.onNodeWithText("failure", useUnmergedTree = true).assertIsDisplayed()
@@ -101,7 +101,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun snackbar_showsMessage_whenErrorOccuredTogglingFavorite() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
         favoritesRepository.setShouldThrowAsyncError(true)
 
         with(composeTestRule) {
@@ -112,7 +112,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun snackbar_showsMessage_whenForexDataRepositoryErrorOccured() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
         forexDataRepository.setShouldThrowError(true)
 
         composeTestRule.onNodeWithText("failure", useUnmergedTree = true).assertIsDisplayed()
@@ -120,7 +120,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun defaultMajorGroupIsSelected_majorPairIsDisplayed() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         with(composeTestRule) {
             onNodeWithText("EUR/USD").assertIsDisplayed()
@@ -130,7 +130,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun allGroupIsSelected_allPairsAreDisplayed() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         with(composeTestRule) {
             onNodeWithText("ALL").assertIsDisplayed().performClick()
@@ -141,7 +141,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun minorGroupIsSelected_minorPairIsDisplayed() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         with(composeTestRule) {
             onNodeWithText("MINOR").assertIsDisplayed().performClick()
@@ -152,7 +152,7 @@ class ForexPairsScreenTest {
 
     @Test
     fun allGroupIsSelected_minorPairIsSearched_minorPairIsDisplayed() {
-        setupForexPairsScree()
+        setupForexPairsScreen()
 
         with(composeTestRule) {
             onNodeWithText("ALL").assertIsDisplayed().performClick()
