@@ -106,4 +106,5 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.12")
     testImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
     testImplementation("androidx.navigation:navigation-testing:2.7.7")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
