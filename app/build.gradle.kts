@@ -59,7 +59,7 @@ android {
     koverReport {
         filters {
             excludes {
-                classes("*_HiltModules*", "*ComposableSingletons*", "*_Impl*")
+                classes("*_HiltModules*", "*ComposableSingletons*", "*_Impl*", "*Hilt_*")
                 packages("dagger.hilt.internal.aggregatedroot.codegen")
                 annotatedBy("*Preview*", "*Generated*", "*AggregatedDeps*")
             }
