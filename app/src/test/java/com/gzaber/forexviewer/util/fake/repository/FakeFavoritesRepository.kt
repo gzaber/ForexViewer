@@ -1,5 +1,6 @@
-package com.gzaber.forexviewer.data.repository.favorites
+package com.gzaber.forexviewer.util.fake.repository
 
+import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

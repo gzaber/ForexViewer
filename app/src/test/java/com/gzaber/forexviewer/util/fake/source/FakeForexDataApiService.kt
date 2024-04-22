@@ -1,5 +1,6 @@
-package com.gzaber.forexviewer.data.source.network
+package com.gzaber.forexviewer.util.fake.source
 
+import com.gzaber.forexviewer.data.source.network.ForexDataApiService
 import com.gzaber.forexviewer.data.source.network.model.NetworkExchangeRate
 import com.gzaber.forexviewer.data.source.network.model.NetworkForexPairsList
 import com.gzaber.forexviewer.data.source.network.model.NetworkTimeSeries

@@ -1,4 +1,4 @@
-package com.gzaber.forexviewer.data.source.local
+package com.gzaber.forexviewer.util.fake.source
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences

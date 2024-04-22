@@ -1,7 +1,7 @@
 package com.gzaber.forexviewer.data.repository.forexdata
 
 import com.gzaber.forexviewer.data.repository.forexdata.model.toModel
-import com.gzaber.forexviewer.data.source.network.FakeForexDataApiService
+import com.gzaber.forexviewer.util.fake.source.FakeForexDataApiService
 import com.gzaber.forexviewer.data.source.network.model.NetworkExchangeRate
 import com.gzaber.forexviewer.data.source.network.model.NetworkForexPair
 import com.gzaber.forexviewer.data.source.network.model.NetworkForexPairsList

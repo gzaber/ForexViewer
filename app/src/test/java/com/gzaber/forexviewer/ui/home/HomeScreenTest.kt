@@ -6,10 +6,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.gzaber.forexviewer.data.repository.apikey.FakeApiKeyRepository
-import com.gzaber.forexviewer.data.repository.favorites.FakeFavoritesRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeApiKeyRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
-import com.gzaber.forexviewer.data.repository.forexdata.FakeForexDataRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.ui.home.composable.TAG_API_KEY_DIALOG
 import com.gzaber.forexviewer.ui.util.composable.TAG_LOADING_BOX

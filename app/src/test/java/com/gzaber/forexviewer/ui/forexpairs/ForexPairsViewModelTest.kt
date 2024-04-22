@@ -1,8 +1,8 @@
 package com.gzaber.forexviewer.ui.forexpairs
 
-import com.gzaber.forexviewer.data.repository.favorites.FakeFavoritesRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
-import com.gzaber.forexviewer.data.repository.forexdata.FakeForexDataRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.ui.util.model.UiForexPair
 import com.gzaber.forexviewer.util.MainDispatcherRule

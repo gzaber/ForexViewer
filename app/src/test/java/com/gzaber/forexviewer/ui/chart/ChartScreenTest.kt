@@ -8,9 +8,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
-import com.gzaber.forexviewer.data.repository.favorites.FakeFavoritesRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
-import com.gzaber.forexviewer.data.repository.forexdata.FakeForexDataRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesMeta
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeriesValue

@@ -1,5 +1,6 @@
-package com.gzaber.forexviewer.data.repository.apikey
+package com.gzaber.forexviewer.util.fake.repository
 
+import com.gzaber.forexviewer.data.repository.apikey.ApiKeyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

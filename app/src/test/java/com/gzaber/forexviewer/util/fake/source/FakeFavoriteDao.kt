@@ -1,5 +1,7 @@
-package com.gzaber.forexviewer.data.source.local
+package com.gzaber.forexviewer.util.fake.source
 
+import com.gzaber.forexviewer.data.source.local.FavoriteDao
+import com.gzaber.forexviewer.data.source.local.FavoriteEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
