@@ -59,7 +59,7 @@ android {
     koverReport {
         filters {
             excludes {
-                classes("*_HiltModules*", "*ComposableSingletons*", "*_Impl*")
+                classes("*_HiltModules*", "*ComposableSingletons*", "*_Impl*", "*Hilt_*")
                 packages("dagger.hilt.internal.aggregatedroot.codegen")
                 annotatedBy("*Preview*", "*Generated*", "*AggregatedDeps*")
             }
@@ -106,4 +106,5 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.12")
     testImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
     testImplementation("androidx.navigation:navigation-testing:2.7.7")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
