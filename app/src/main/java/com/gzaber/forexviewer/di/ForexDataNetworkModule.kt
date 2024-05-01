@@ -21,6 +21,7 @@ import javax.inject.Singleton
 object ForexDataNetworkModule {
 
     private const val MEDIA_TYPE: String = "application/json"
+    private val json = Json { ignoreUnknownKeys = true }
 
     @Singleton
     @Provides
@@ -40,8 +41,11 @@ object ForexDataNetworkModule {
     fun provideForexDataApiService(httpClient: OkHttpClient): ForexDataApiService =
         Retrofit.Builder()
             .baseUrl(ForexDataApiService.BASE_URL)
-            .addConverterFactory(Json.asConverterFactory(MediaType.get(MEDIA_TYPE)))
+            .addConverterFactory(
+                json.asConverterFactory(MediaType.get(MEDIA_TYPE))
+            )
             .client(httpClient)
             .build()
             .create(ForexDataApiService::class.java)
+
 }
