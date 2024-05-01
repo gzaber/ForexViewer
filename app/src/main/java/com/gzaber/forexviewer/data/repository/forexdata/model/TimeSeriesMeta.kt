@@ -5,6 +5,5 @@ data class TimeSeriesMeta(
     val symbol: String,
     val interval: String,
     val base: String,
-    val quote: String,
-    val type: String
+    val quote: String
 )
