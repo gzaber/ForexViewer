@@ -31,6 +31,7 @@ class DefaultForexDataRepositoryTest {
     )
     private val networkForexPairsList = NetworkForexPairsList(
         data = listOf(networkForexPair1, networkForexPair2),
+        count = 2,
         status = "ok"
     )
 

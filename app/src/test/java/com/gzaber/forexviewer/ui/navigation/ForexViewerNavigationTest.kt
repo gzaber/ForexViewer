@@ -48,8 +48,7 @@ class ForexViewerNavigationTest {
         symbol = "EUR/USD",
         interval = "1h",
         base = "Euro",
-        quote = "US Dollar",
-        type = "Forex"
+        quote = "US Dollar"
     )
     private val timeSeriesValue1 = TimeSeriesValue(
         datetime = "11:00",
