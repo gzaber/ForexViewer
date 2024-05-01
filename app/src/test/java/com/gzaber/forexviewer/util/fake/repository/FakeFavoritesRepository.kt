@@ -15,6 +15,10 @@ class FakeFavoritesRepository(initialFavorites: List<Favorite> = listOf()) : Fav
     private val _shouldThrowFlowError = MutableStateFlow(false)
     private val _shouldThrowAsyncError = MutableStateFlow(false)
 
+    fun clearFavorites() {
+        _favorites.update { emptyList() }
+    }
+
     fun setShouldThrowFlowError(value: Boolean) {
         _shouldThrowFlowError.update { value }
     }
