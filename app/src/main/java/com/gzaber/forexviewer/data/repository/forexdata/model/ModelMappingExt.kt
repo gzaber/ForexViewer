@@ -11,7 +11,7 @@ fun NetworkForexPair.toModel() = ForexPair(symbol, group, base, quote)
 fun NetworkExchangeRate.toModel() = ExchangeRate(symbol, rate)
 
 fun NetworkTimeSeriesMeta.toModel() = TimeSeriesMeta(
-    symbol, interval, base, quote, type
+    symbol, interval, base, quote
 )
 
 fun NetworkTimeSeriesValue.toModel() = TimeSeriesValue(

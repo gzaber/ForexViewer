@@ -9,8 +9,10 @@ import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.ui.util.model.UiFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -30,6 +32,8 @@ class HomeViewModel @Inject constructor(
     private val _apiKeyText = MutableStateFlow("")
     private val _showDialog = MutableStateFlow(false)
     private val _failureMessage = MutableStateFlow<String?>(null)
+    private var _favorites = listOf<Favorite>()
+    private var _previousFavorites = listOf<Favorite>()
 
     val uiState = combine(
         _uiFavorites,
@@ -66,9 +70,22 @@ class HomeViewModel @Inject constructor(
                 }
                 .collect { favorites ->
                     _isLoading.value = false
-                    favorites.forEach { favorite ->
-                        collectUiFavorites(favorite)
+                    _favorites = favorites
+
+                    val uiFavoritesToRemove = _uiFavorites.value.filter { uiFavorite ->
+                        favorites.none { it.symbol == uiFavorite.symbol }
                     }
+                    val mutableUiFavorites = _uiFavorites.value.toMutableList()
+                    mutableUiFavorites.removeAll(uiFavoritesToRemove)
+                    _uiFavorites.update { mutableUiFavorites }
+
+                    favorites.forEach { favorite ->
+                        if (_previousFavorites.none { it.symbol == favorite.symbol }) {
+                            collectUiFavorites(favorite)
+                        }
+                    }
+
+                    _previousFavorites = favorites
                 }
         }
     }
@@ -79,24 +96,31 @@ class HomeViewModel @Inject constructor(
                 .catch {
                     _failureMessage.value = it.message
                     emit(ExchangeRate(favorite.symbol, 0.0))
-                }.collect { exchangeRate ->
-                    val uiFavorite = UiFavorite(
-                        symbol = favorite.symbol,
-                        base = favorite.base,
-                        quote = favorite.quote,
-                        exchangeRate = exchangeRate.rate
-                    )
+                }
+                .cancellable()
+                .collect { exchangeRate ->
 
-                    _uiFavorites.update { favorites ->
-                        val mutableUiFavorites = favorites.toMutableList()
-                        if (_uiFavorites.value.find { it.symbol == favorite.symbol } == null) {
-                            mutableUiFavorites.add(uiFavorite)
-                        } else {
-                            val index =
-                                mutableUiFavorites.indexOfFirst { it.symbol == uiFavorite.symbol }
-                            mutableUiFavorites[index] = uiFavorite
+                    if (_favorites.none { it.symbol == favorite.symbol }) {
+                        this.cancel()
+                    } else {
+                        val uiFavorite = UiFavorite(
+                            symbol = favorite.symbol,
+                            base = favorite.base,
+                            quote = favorite.quote,
+                            exchangeRate = exchangeRate.rate
+                        )
+
+                        _uiFavorites.update { uiFavorites ->
+                            val mutableUiFavorites = uiFavorites.toMutableList()
+                            if (_uiFavorites.value.find { it.symbol == favorite.symbol } == null) {
+                                mutableUiFavorites.add(uiFavorite)
+                            } else {
+                                val index =
+                                    mutableUiFavorites.indexOfFirst { it.symbol == uiFavorite.symbol }
+                                mutableUiFavorites[index] = uiFavorite
+                            }
+                            mutableUiFavorites
                         }
-                        mutableUiFavorites
                     }
                 }
         }

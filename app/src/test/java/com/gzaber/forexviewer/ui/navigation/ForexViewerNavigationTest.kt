@@ -7,11 +7,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.gzaber.forexviewer.MainActivity
 import com.gzaber.forexviewer.data.repository.apikey.ApiKeyRepository
-import com.gzaber.forexviewer.data.repository.apikey.FakeApiKeyRepository
-import com.gzaber.forexviewer.data.repository.favorites.FakeFavoritesRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeApiKeyRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
-import com.gzaber.forexviewer.data.repository.forexdata.FakeForexDataRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries
@@ -48,8 +48,7 @@ class ForexViewerNavigationTest {
         symbol = "EUR/USD",
         interval = "1h",
         base = "Euro",
-        quote = "US Dollar",
-        type = "Forex"
+        quote = "US Dollar"
     )
     private val timeSeriesValue1 = TimeSeriesValue(
         datetime = "11:00",

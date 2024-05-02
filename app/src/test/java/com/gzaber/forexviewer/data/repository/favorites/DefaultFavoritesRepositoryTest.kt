@@ -3,7 +3,7 @@ package com.gzaber.forexviewer.data.repository.favorites
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
 import com.gzaber.forexviewer.data.repository.favorites.model.toEntity
 import com.gzaber.forexviewer.data.repository.favorites.model.toModel
-import com.gzaber.forexviewer.data.source.local.FakeFavoriteDao
+import com.gzaber.forexviewer.util.fake.source.FakeFavoriteDao
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

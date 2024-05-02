@@ -11,5 +11,7 @@ data class NetworkTimeSeriesMeta(
     val base: String,
     @SerialName(value = "currency_quote")
     val quote: String,
-    val type: String
+    val type: String,
+    @SerialName(value = "scale_factor")
+    val scaleFactor: Int? = null
 )

@@ -40,7 +40,9 @@ object ForexDataNetworkModule {
     fun provideForexDataApiService(httpClient: OkHttpClient): ForexDataApiService =
         Retrofit.Builder()
             .baseUrl(ForexDataApiService.BASE_URL)
-            .addConverterFactory(Json.asConverterFactory(MediaType.get(MEDIA_TYPE)))
+            .addConverterFactory(
+                Json.asConverterFactory(MediaType.get(MEDIA_TYPE))
+            )
             .client(httpClient)
             .build()
             .create(ForexDataApiService::class.java)

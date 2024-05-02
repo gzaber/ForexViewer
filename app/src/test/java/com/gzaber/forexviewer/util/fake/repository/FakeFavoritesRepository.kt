@@ -1,5 +1,6 @@
-package com.gzaber.forexviewer.data.repository.favorites
+package com.gzaber.forexviewer.util.fake.repository
 
+import com.gzaber.forexviewer.data.repository.favorites.FavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +14,10 @@ class FakeFavoritesRepository(initialFavorites: List<Favorite> = listOf()) : Fav
     private var _favorites = MutableStateFlow(initialFavorites)
     private val _shouldThrowFlowError = MutableStateFlow(false)
     private val _shouldThrowAsyncError = MutableStateFlow(false)
+
+    fun clearFavorites() {
+        _favorites.update { emptyList() }
+    }
 
     fun setShouldThrowFlowError(value: Boolean) {
         _shouldThrowFlowError.update { value }

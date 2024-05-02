@@ -1,5 +1,6 @@
-package com.gzaber.forexviewer.data.repository.forexdata
+package com.gzaber.forexviewer.util.fake.repository
 
+import com.gzaber.forexviewer.data.repository.forexdata.ForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.data.repository.forexdata.model.ForexPair
 import com.gzaber.forexviewer.data.repository.forexdata.model.TimeSeries

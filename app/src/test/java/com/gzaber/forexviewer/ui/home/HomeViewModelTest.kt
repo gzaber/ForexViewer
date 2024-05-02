@@ -1,9 +1,9 @@
 package com.gzaber.forexviewer.ui.home
 
-import com.gzaber.forexviewer.data.repository.apikey.FakeApiKeyRepository
-import com.gzaber.forexviewer.data.repository.favorites.FakeFavoritesRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeApiKeyRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeFavoritesRepository
 import com.gzaber.forexviewer.data.repository.favorites.model.Favorite
-import com.gzaber.forexviewer.data.repository.forexdata.FakeForexDataRepository
+import com.gzaber.forexviewer.util.fake.repository.FakeForexDataRepository
 import com.gzaber.forexviewer.data.repository.forexdata.model.ExchangeRate
 import com.gzaber.forexviewer.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +25,6 @@ class HomeViewModelTest {
 
     private val favorite = Favorite(1, "EUR/USD", "Euro", "US Dollar")
     private val exchangeRate = ExchangeRate("EUR/USD", 1.1021)
-
 
     @get:Rule
     val rule = MainDispatcherRule()
@@ -77,6 +76,16 @@ class HomeViewModelTest {
         assert(viewModel.uiState.value.uiFavorites.size == 1)
         assert(viewModel.uiState.value.uiFavorites.first().symbol == favorite.symbol)
         assert(viewModel.uiState.value.uiFavorites.first().exchangeRate == exchangeRate.rate)
+    }
+
+    @Test
+    fun init_emptyFavoritesListCollected_emitsEmptyUiFavoritesList() = runTest {
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiState.collect()
+        }
+
+        favoritesRepository.clearFavorites()
+        assert(viewModel.uiState.value.uiFavorites.isEmpty())
     }
 
     @Test

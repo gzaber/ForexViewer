@@ -1,6 +1,6 @@
 package com.gzaber.forexviewer.data.repository.apikey
 
-import com.gzaber.forexviewer.data.source.local.FakeDataStore
+import com.gzaber.forexviewer.util.fake.source.FakeDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
