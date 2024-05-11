@@ -4,9 +4,8 @@
 
 # ForexViewer
 
-Android app for monitoring the forex market. 
-Data provider: https://twelvedata.com  
-You can request your own API key at https://twelvedata.com/pricing
+Android app for monitoring the forex market.  
+You can request your own API key at https://twelvedata.com
 
 &nbsp;
 [<img alt="video 1" width="250px" src=".images/rec1.gif" />](.images/rec1.gif)
