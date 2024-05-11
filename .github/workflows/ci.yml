@@ -59,6 +59,7 @@ jobs:
 
       - name: Create release
         run: |
-          env: GH_TOKEN: ${{ github.token }}
-          shell: bash
           gh release create v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} ./android_release/*.apk
+          env: 
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          shell: bash
