@@ -54,12 +54,10 @@ jobs:
           echo "VERSION_2ND_PLACE=$((GITHUB_RUN_NUMBER/10))" >> $GITHUB_ENV
           echo "VERSION_3RD_PLACE=$((GITHUB_RUN_NUMBER%10))" >> $GITHUB_ENV
 
-      - name: Download artifacts
+      - name: Download release artifacts
         uses: actions/download-artifact@v4
 
       - name: Create release
-        run: |
-          gh release create v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} ./android_release/*.apk
+        run: gh release create v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} ./android_release/*.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
