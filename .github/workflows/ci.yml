@@ -46,8 +46,7 @@ jobs:
     if: github.event_name == 'push'
     needs: [ test_and_build ]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
     steps:
       - name: Generate version variables
         run: |
