@@ -76,7 +76,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.05.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -84,27 +84,27 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
-    val retrofit_version = "2.9.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    val hilt_version = "2.50"
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    ksp("com.google.dagger:hilt-compiler:$hilt_version")
+    val hiltVersion = "2.50"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.compose.ui:ui-test-junit4")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("org.robolectric:robolectric:4.12")
-    testImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
+    testImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
     testImplementation("androidx.navigation:navigation-testing:2.7.7")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }

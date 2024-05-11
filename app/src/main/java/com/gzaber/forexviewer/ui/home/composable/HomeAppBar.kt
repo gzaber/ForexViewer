@@ -1,6 +1,7 @@
 package com.gzaber.forexviewer.ui.home.composable
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -42,7 +43,7 @@ fun HomeAppBar(
         actions = {
             IconButton(onClick = onForexPairsClick) {
                 Icon(
-                    imageVector = Icons.Default.List,
+                    imageVector = Icons.AutoMirrored.Filled.List,
                     contentDescription = stringResource(id = R.string.navigate_to_forex_pairs)
                 )
             }
