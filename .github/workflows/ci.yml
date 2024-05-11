@@ -55,13 +55,11 @@ jobs:
 
       - name: Download release artifacts
         uses: actions/download-artifact@v4
-        with:
-          path: android_release/
 
       - name: Create release
         run: gh release create \
           v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} \
-          $GITHUB_WORKSPACE/android_release \
+          $GITHUB_WORKSPACE/android_release/* \
           --repo=$GITHUB_REPOSITORY
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
