@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android_release
-          path: ./app/build/outputs/apk/release/
+          path: ./app/build/outputs/apk/release/*.apk
 
   release_apk:
     if: github.event_name == 'push'
@@ -59,7 +59,6 @@ jobs:
 
       - name: Create release
         run: |
-          env:
-            GH_TOKEN: ${{ github.GH_TOKEN }}
-          shell: bash
-          gh release create v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} ./android_release/*.apk
+          gh release create v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} ./android_release/
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
