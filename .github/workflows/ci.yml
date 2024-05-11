@@ -7,10 +7,9 @@ on:
     branches: [ "master" ]
 
 jobs:
+
   test_and_build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: set up JDK 17
@@ -35,3 +34,36 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Upload release artifacts
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: android_release
+          path: ./app/build/outputs/apk/release/*.apk
+
+  release_apk:
+    if: github.event_name == 'push'
+    needs: [ test_and_build ]
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Generate version variables
+        run: |
+          echo "VERSION_2ND_PLACE=$((GITHUB_RUN_NUMBER/2/10))" >> $GITHUB_ENV
+          echo "VERSION_3RD_PLACE=$((GITHUB_RUN_NUMBER/2%10))" >> $GITHUB_ENV
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: android_release
+
+      - name: Create release
+        run: |
+          gh release create \
+          v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} \
+          $GITHUB_WORKSPACE/*.apk \
+          --repo=$GITHUB_REPOSITORY \
+          --title=$GITHUB_REPOSITORY
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
