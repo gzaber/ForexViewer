@@ -50,8 +50,8 @@ jobs:
     steps:
       - name: Generate version variables
         run: |
-          echo "VERSION_2ND_PLACE=$((GITHUB_RUN_NUMBER/10))" >> $GITHUB_ENV
-          echo "VERSION_3RD_PLACE=$((GITHUB_RUN_NUMBER%10))" >> $GITHUB_ENV
+          echo "VERSION_2ND_PLACE=$((GITHUB_RUN_NUMBER/2/10))" >> $GITHUB_ENV
+          echo "VERSION_3RD_PLACE=$((GITHUB_RUN_NUMBER/2%10))" >> $GITHUB_ENV
 
       - name: Download release artifacts
         uses: actions/download-artifact@v4
@@ -60,10 +60,10 @@ jobs:
 
       - name: Create release
         run: |
-          ls
           gh release create \
           v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} \
           $GITHUB_WORKSPACE/*.apk \
-          --repo=$GITHUB_REPOSITORY
+          --repo=$GITHUB_REPOSITORY \
+          --title=""
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
