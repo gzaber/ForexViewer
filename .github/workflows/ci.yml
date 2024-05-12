@@ -72,7 +72,7 @@ jobs:
 
       - name: Rename release file
         run: |
-          mv app-release-unsigned-signed.apk app-release-signed.apk
+          mv app-release-unsigned-signed.apk forex-viewer-release-signed.apk
 
       - name: Create release
         run: |
