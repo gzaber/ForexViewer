@@ -64,6 +64,6 @@ jobs:
           v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }} \
           $GITHUB_WORKSPACE/*.apk \
           --repo=$GITHUB_REPOSITORY \
-          --title=""
+          --title=$GITHUB_REPOSITORY
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
