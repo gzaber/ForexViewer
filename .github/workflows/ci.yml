@@ -35,11 +35,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Rename release file
-        if: github.event_name == 'push'
-        run: |
-          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
-
       - name: Sign apk
         if: github.event_name == 'push'
         uses: ilharp/sign-android-release@v1
@@ -74,6 +69,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: android_release
+
+      - name: Rename release file
+        run: |
+          mv app-release-unsigned-signed.apk app-release-signed.apk
 
       - name: Create release
         run: |
