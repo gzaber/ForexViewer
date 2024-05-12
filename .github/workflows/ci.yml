@@ -35,12 +35,24 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Sign apk
+        if: github.event_name == 'push'
+        uses: ilharp/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.SIGNING_KEY }}
+          keyAlias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          buildToolsVersion: 33.0.0
+
       - name: Upload release artifacts
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: android_release
-          path: ./app/build/outputs/apk/release/*.apk
+          path: ${{steps.sign_app.outputs.signedFile}}
 
   release_apk:
     if: github.event_name == 'push'
@@ -57,6 +69,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: android_release
+
+      - name: Rename release file
+        run: |
+          mv app-release-unsigned-signed.apk forex-viewer-release-signed.apk
 
       - name: Create release
         run: |
